@@ -1,0 +1,5 @@
+<dependency>
+    <groupId>com.google.ortools</groupId>
+    <artifactId>ortools-java</artifactId>
+    <version>9.15.6755</version>
+</dependency>
