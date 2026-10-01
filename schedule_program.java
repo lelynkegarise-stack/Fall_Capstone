@@ -1,5 +1,8 @@
 import com.google.ortools.Loader;
 import com.google.ortools.sat.CpModel;
+import com.google.ortools.sat.CpSolver;
+import com.google.ortools.sat.CpSolverStatus;
+import com.google.ortools.sat.IntVar;
 
 public class App {
     public static void main(String[] args) {
