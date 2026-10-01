@@ -1,11 +1,11 @@
 package com.google.ortools.sat.samples;
-
 import com.google.ortools.Loader;
 import com.google.ortools.sat.CpModel;
 import com.google.ortools.sat.CpSolver;
 import com.google.ortools.sat.CpSolverSolutionCallback;
 import com.google.ortools.sat.CpSolverStatus;
 import com.google.ortools.sat.IntVar;
+import pandas as pd;
 
 /** Code sample that solves a model and displays all solutions. */
 public class SearchForAllSolutionsSampleSat {
@@ -33,6 +33,7 @@ public class SearchForAllSolutionsSampleSat {
 
   public static void main(String[] args) throws Exception {
     Loader.loadNativeLibraries();
+    
     // Create the model.
     CpModel model = new CpModel();
 
