@@ -5,8 +5,6 @@ import com.google.ortools.sat.CpSolver;
 import com.google.ortools.sat.CpSolverSolutionCallback;
 import com.google.ortools.sat.CpSolverStatus;
 import com.google.ortools.sat.IntVar;
-import pandas as pd;
-
 /** Code sample that solves a model and displays all solutions. */
 public class SearchForAllSolutionsSampleSat {
   static class VarArraySolutionPrinter extends CpSolverSolutionCallback {
