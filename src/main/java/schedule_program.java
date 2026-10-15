@@ -25,9 +25,8 @@ public class App {
         Loader.loadNativeLibraries();
         String classrooms='dataset/classrooms.csv';
         String courses='dataset/courses.csv';
-        String schedules='dataset/schedule.csv';
-        String students='dataset/students.csv'
-        String timeslot='dataset/timeslot.csv'
+        String students='dataset/students.csv';
+        String timeslot='dataset/timeslot.csv';
         List<DataRow> dataset = new ArrayList<>();
 
         // 2. Safely parse the Excel-formatted CSV file
