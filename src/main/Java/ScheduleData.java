@@ -15,7 +15,6 @@ public class CSVDataLoader {
     public static class ScheduleData {
         public List<String> classrooms = new ArrayList<>();
         public List<String> courses = new ArrayList<>();
-        public List<String> schedules = new ArrayList<>();
         public List<String> students = new ArrayList<>();
         public List<String> timeslots = new ArrayList<>();
     }
@@ -25,7 +24,6 @@ public class CSVDataLoader {
         
         String classroomsPath = "dataset/classrooms.csv";
         String coursesPath    = "dataset/courses.csv";
-        String schedulesPath   = "dataset/schedule.csv";
         String studentsPath    = "dataset/students.csv";
         String timeslotPath    = "dataset/timeslot.csv";
 
@@ -37,10 +35,6 @@ public class CSVDataLoader {
             // 2. Courses
             try (Reader r = new FileReader(coursesPath); CSVParser p = new CSVParser(r, CSVFormat.EXCEL.builder().setHeader().setSkipHeaderRecord(true).build())) {
                 for (CSVRecord rec : p) data.courses.add(rec.get("course_id").trim());
-            }
-            // 3. Schedules
-            try (Reader r = new FileReader(schedulesPath); CSVParser p = new CSVParser(r, CSVFormat.EXCEL.builder().setHeader().setSkipHeaderRecord(true).build())) {
-                for (CSVRecord rec : p) data.schedules.add(rec.get("schedule_id").trim());
             }
             // 4. Students
             try (Reader r = new FileReader(studentsPath); CSVParser p = new CSVParser(r, CSVFormat.EXCEL.builder().setHeader().setSkipHeaderRecord(true).build())) {
