@@ -4,7 +4,9 @@ import com.google.ortools.Loader;
 import com.google.ortools.sat.BoolVar;
 import com.google.ortools.sat.CpModel;
 import com.google.ortools.sat.CpSolver;
-import com.google.ortools.sat.CpSolverStatus; // Make sure to import BoolVar instead of just Literal
+import com.google.ortools.sat.CpSolverStatus; 
+import com.google.ortools.sat.LinearExpr;
+
 
 public class SchedulingSolver {
     public static void main(String[] args) {
@@ -16,12 +18,12 @@ public class SchedulingSolver {
         CSVDataLoader.ScheduleData dataset = loader.loadAllDatasets();
 
         // Pull your arrays/lists out of the dataset object 
-        // (Adjust these field names if they are named slightly differently in ScheduleData.java)
-        String[] exams = dataset.exams;          // Example: array or list of exams
-        String[] timeslots = dataset.timeslots;  // Example: array or list of timeslots
-        String[] rooms = dataset.rooms;          // Example: array or list of rooms
-        int[] examStudents = dataset.examStudents; // Student counts per exam
-
+        String[] exams = dataset.exams;         
+        String[] timeslots = dataset.timeslots;  
+        String[] rooms = dataset.rooms;          
+        int[] examStudents = dataset.examStudents; 
+        int[] roomCapacities = dataset.roomCapacities;
+        
         // 3. Initialize the Google CP-SAT Optimization Model
         CpModel model = new CpModel();
         
@@ -49,7 +51,41 @@ public class SchedulingSolver {
             model.addExactlyOne(allPossibleSlots);
         }
 
-       // --- 3. Solve and Output Results ---
+        // Diagnostic check: print max room capacity vs large exams
+        int maxRoomCap = 0;
+        for (int cap : roomCapacities) {
+            if (cap > maxRoomCap) maxRoomCap = cap;
+        }
+        System.out.println("Maximum room capacity available: " + maxRoomCap);
+
+        for (int i = 0; i < exams.length; i++) {
+            if (examStudents[i] > maxRoomCap) {
+                System.out.println("⚠️ Warning: Exam " + exams[i] + " has " + examStudents[i] + " students, but the largest room only holds " + maxRoomCap + "!");
+            }
+        }
+
+        //Room Capacity
+        for (int e = 0; e < exams.length; e++) {
+            for (int t = 0; t < timeslots.length; t++) {
+                for (int r = 0; r < rooms.length; r++) {
+                    // Simple, fast array lookup since roomCapacities[r] directly maps to rooms[r]
+                    if (examStudents[e] > roomCapacities[r]) {
+                        model.addEquality(x[e][t][r], 0);
+                    }
+                }
+            }
+        }
+        // no room double booking 
+        for (int t=0; t<timeslots.length; t++){
+            for(int r=0;r<rooms.length;r++){
+                BoolVar[] examsInRoomSlot = new BoolVar[exams.length];
+                for (int e=0; e<exams.length;e++){
+                    examsInRoomSlot[e]=x[e][t][r];
+                }
+                model.addLessOrEqual(LinearExpr.sum(examsInRoomSlot),1);
+            }
+        }
+        // --- 3. Solve and Output Results ---
         CpSolver solver = new CpSolver();
         CpSolverStatus status = solver.solve(model);
 
