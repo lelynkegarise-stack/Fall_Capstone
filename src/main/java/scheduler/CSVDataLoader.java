@@ -11,188 +11,142 @@ public class CSVDataLoader {
     public static class ScheduleData {
         public String[] exams;
         public String[] timeslots;
+        public String[] timeslotDays;
+        public String[] timeslotTimes;
         public String[] rooms;
+        public int[] roomCapacities;
         public int[] examStudents;
         public int[] examInstructors;
-        public int[] roomCapacities;
         public String[] courseDepartments;
     }
 
     public ScheduleData loadAllDatasets() {
         ScheduleData data = new ScheduleData();
-        
-        List<String> timeslotsList = loadSingleColumn("dataset/timeslot.csv", "timeslot_id");
 
-        // 1. Load Classrooms & Capacities (Using exact header matching)
-        List<String> classroomsList = new ArrayList<>();
-        List<Integer> capacitiesList = new ArrayList<>();
-        loadClassroomData("dataset/classrooms.csv", classroomsList, capacitiesList);
-        data.rooms = classroomsList.toArray(new String[0]);
-        data.roomCapacities = capacitiesList.stream().mapToInt(Integer::intValue).toArray();
+        // 1. Load Timeslots (ID, Day, Time)
+        List<String> tIds = new ArrayList<>(), tDays = new ArrayList<>(), tTimes = new ArrayList<>();
+        loadTimeslotData("dataset/timeslot.csv", tIds, tDays, tTimes);
+        data.timeslots = tIds.toArray(new String[0]);
+        data.timeslotDays = tDays.toArray(new String[0]);
+        data.timeslotTimes = tTimes.toArray(new String[0]);
 
-        // 2. Load Courses & Departments
+        // 2. Load Classrooms & Capacities
+        List<String> roomsList = new ArrayList<>();
+        List<Integer> capsList = new ArrayList<>();
+        loadClassroomData("dataset/classrooms.csv", roomsList, capsList);
+        data.rooms = roomsList.toArray(new String[0]);
+        data.roomCapacities = capsList.stream().mapToInt(Integer::intValue).toArray();
+
+        // 3. Load Courses & Departments
         List<String> coursesList = new ArrayList<>();
-        List<String> departmentsList = new ArrayList<>();
-        loadCourseData("dataset/courses.csv", coursesList, departmentsList);
+        List<String> deptsList = new ArrayList<>();
+        loadCourseData("dataset/courses.csv", coursesList, deptsList);
         data.exams = coursesList.toArray(new String[0]);
-        data.courseDepartments = departmentsList.toArray(new String[0]);
+        data.courseDepartments = deptsList.toArray(new String[0]);
 
-        data.timeslots = timeslotsList.toArray(new String[0]);
-
-        // 3. Load Student Programs
+        // 4. Load Supporting Lists for Calculations
         List<String> studentPrograms = loadSingleColumn("dataset/students.csv", "program_name");
+        List<String> instructorDepts = loadSingleColumn("dataset/instructors.csv", "department");
 
-        // 4. Load Instructor Programs
-        List<String> instructorsPrograms = loadSingleColumn("dataset/instructors.csv", "department");
-
-        // 4. Calculate realistic exam student counts (bounded to fit typical room sizes)
+        // 5. Calculate Exam Students & Assign Instructors
         data.examStudents = new int[data.exams.length];
+        data.examInstructors = new int[data.exams.length];
+        int numInstructors = Math.max(1, instructorDepts.size());
+
         for (int i = 0; i < data.exams.length; i++) {
-            String courseDept = data.courseDepartments[i].toLowerCase().trim();
-            int count = 0;
-
-            for (String program : studentPrograms) {
-                String progLower = program.toLowerCase().trim();
-                // Stricter match: check if the program equals or closely aligns with the department
-                if (progLower.equals(courseDept) || progLower.contains("in " + courseDept)) {
-                    count++;
-                }
-            }
-
-            // Fallback / Bounding: Ensure class sizes are realistic (e.g., between 15 and 40 students) 
-            // so they can actually fit into your rooms and the solver succeeds!
-            if (count == 0 || count > 45) {
-                // Generate a consistent pseudo-random size based on the exam index (between 15 and 40)
-                count = 15 + (Math.abs(courseDept.hashCode() + i) % 26);
-            }
+            String dept = data.courseDepartments[i].toLowerCase().trim();
             
+            // Calculate student size
+            int count = 0;
+            for (String prog : studentPrograms) {
+                String pLower = prog.toLowerCase().trim();
+                if (pLower.equals(dept) || pLower.contains("in " + dept)) count++;
+            }
+            if (count == 0 || count > 45) {
+                count = 15 + (Math.abs(dept.hashCode() + i) % 26);
+            }
             data.examStudents[i] = count;
+
+            // Assign Instructor ID based on department hash
+            data.examInstructors[i] = Math.abs(dept.hashCode()) % numInstructors;
         }
 
-        System.out.println("All CSV files safely loaded with corrected capacities and exam sizes!");
+        System.out.println("Dataset successfully loaded and parsed!");
         return data;
     }
 
-    // Exact header loader for Classrooms
-    private void loadClassroomData(String filePath, List<String> roomIDs, List<Integer> capacities) {
-        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
-            StringBuilder fileContent = new StringBuilder();
-            String currentLine;
-            while ((currentLine = br.readLine()) != null) {
-                fileContent.append(currentLine).append("\n");
-            }
+    // --- Helper Loaders ---
 
-            List<String[]> rows = parseCSVFile(fileContent.toString());
-            if (rows.isEmpty()) return;
-
-            String[] headers = rows.get(0);
-            int idIndex = -1, capacityIndex = -1;
-            for (int i = 0; i < headers.length; i++) {
-                String headerClean = headers[i].trim().replaceAll("^\"|\"$", "").toLowerCase();
-                if (headerClean.equals("classroom_id") || headerClean.equals("room_id")) {
-                    idIndex = i;
-                }
-                if (headerClean.equals("capacity") || headerClean.equals("size")) {
-                    capacityIndex = i;
-                }
-            }
-
-            // Fallback default indices if header names differ slightly
-            if (idIndex == -1) idIndex = 0;
-            if (capacityIndex == -1) capacityIndex = 3;
-
-            for (int r = 1; r < rows.size(); r++) {
-                String[] values = rows.get(r);
-                if (values.length > idIndex && values.length > capacityIndex) {
-                    String id = values[idIndex].trim().replaceAll("^\"|\"$", "");
-                    String capStr = values[capacityIndex].trim().replaceAll("^\"|\"$", "");
-                    if (!id.isEmpty()) {
-                        roomIDs.add(id);
-                        capacities.add(capStr.isEmpty() ? 30 : Integer.parseInt(capStr));
-                    }
-                }
-            }
-        } catch (IOException | NumberFormatException e) {
-            System.err.println("Error loading classrooms: " + e.getMessage());
+    private void loadTimeslotData(String path, List<String> ids, List<String> days, List<String> times) {
+        List<String[]> rows = readCSV(path);
+        for (int r = 1; r < rows.size(); r++) {
+            String[] row = rows.get(r);
+            if (row.length > 0) ids.add(row[0].trim());
+            days.add(row.length > 1 ? row[1].trim() : "Day");
+            times.add(row.length > 2 ? row[2].trim() : "Time");
         }
     }
 
-    private void loadCourseData(String filePath, List<String> courseIDs, List<String> departments) {
-        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
-            StringBuilder fileContent = new StringBuilder();
-            String currentLine;
-            while ((currentLine = br.readLine()) != null) {
-                fileContent.append(currentLine).append("\n");
+    private void loadClassroomData(String path, List<String> rooms, List<Integer> caps) {
+        List<String[]> rows = readCSV(path);
+        for (int r = 1; r < rows.size(); r++) {
+            String[] row = rows.get(r);
+            if (row.length > 0 && !row[0].isEmpty()) {
+                rooms.add(row[0].trim());
+                String capStr = row.length > 3 ? row[3].trim() : (row.length > 1 ? row[1].trim() : "30");
+                caps.add(capStr.isEmpty() ? 30 : Integer.parseInt(capStr));
             }
-
-            List<String[]> rows = parseCSVFile(fileContent.toString());
-            if (rows.isEmpty()) return;
-
-            String[] headers = rows.get(0);
-            int idIndex = -1, deptIndex = -1;
-            for (int i = 0; i < headers.length; i++) {
-                String headerClean = headers[i].trim().replaceAll("^\"|\"$", "").toLowerCase();
-                if (headerClean.contains("course_id") || headerClean.equals("id")) {
-                    idIndex = i;
-                }
-                if (headerClean.contains("department") || headerClean.contains("dept")) {
-                    deptIndex = i;
-                }
-            }
-
-            if (idIndex == -1) idIndex = 0;
-            if (deptIndex == -1) deptIndex = 2;
-
-            for (int r = 1; r < rows.size(); r++) {
-                String[] values = rows.get(r);
-                if (values.length > idIndex && values.length > deptIndex) {
-                    String id = values[idIndex].trim().replaceAll("^\"|\"$", "");
-                    String dept = values[deptIndex].trim().replaceAll("^\"|\"$", "");
-                    if (!id.isEmpty()) {
-                        courseIDs.add(id);
-                        departments.add(dept);
-                    }
-                }
-            }
-        } catch (IOException e) {
-            System.err.println("Error loading courses: " + e.getMessage());
         }
     }
 
-    private List<String> loadSingleColumn(String filePath, String idColumnName) {
-        List<String> records = new ArrayList<>();
-        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
-            StringBuilder fileContent = new StringBuilder();
-            String currentLine;
-            while ((currentLine = br.readLine()) != null) {
-                fileContent.append(currentLine).append("\n");
+    private void loadCourseData(String path, List<String> courses, List<String> depts) {
+        List<String[]> rows = readCSV(path);
+        for (int r = 1; r < rows.size(); r++) {
+            String[] row = rows.get(r);
+            if (row.length > 0 && !row[0].isEmpty()) {
+                courses.add(row[0].trim());
+                depts.add(row.length > 2 ? row[2].trim() : (row.length > 1 ? row[1].trim() : "General"));
             }
-
-            List<String[]> rows = parseCSVFile(fileContent.toString());
-            if (rows.isEmpty()) return records;
-
-            String[] headers = rows.get(0);
-            int targetIndex = 0;
-            for (int i = 0; i < headers.length; i++) {
-                if (headers[i].trim().equalsIgnoreCase(idColumnName)) {
-                    targetIndex = i;
-                    break;
-                }
-            }
-
-            for (int r = 1; r < rows.size(); r++) {
-                String[] values = rows.get(r);
-                if (values.length > targetIndex) {
-                    String val = values[targetIndex].trim().replaceAll("^\"|\"$", "");
-                    if (!val.isEmpty()) {
-                        records.add(val);
-                    }
-                }
-            }
-        } catch (IOException e) {
-            System.err.println("Error reading file " + filePath + ": " + e.getMessage());
         }
-        return records;
+    }
+
+    private List<String> loadSingleColumn(String path, String colName) {
+        List<String> list = new ArrayList<>();
+        List<String[]> rows = readCSV(path);
+        if (rows.isEmpty()) return list;
+        
+        int targetIdx = 0;
+        String[] headers = rows.get(0);
+        for (int i = 0; i < headers.length; i++) {
+            if (headers[i].trim().equalsIgnoreCase(colName)) {
+                targetIdx = i;
+                break;
+            }
+        }
+
+        for (int r = 1; r < rows.size(); r++) {
+            String[] row = rows.get(r);
+            if (row.length > targetIdx) {
+                String val = row[targetIdx].trim().replaceAll("^\"|\"$", "");
+                if (!val.isEmpty()) list.add(val);
+            }
+        }
+        return list;
+    }
+
+    private List<String[]> readCSV(String path) {
+        List<String[]> rows = new ArrayList<>();
+        try (BufferedReader br = new BufferedReader(new FileReader(path))) {
+            StringBuilder sb = new StringBuilder();
+            String line;
+            while ((line = br.readLine()) != null) {
+                sb.append(line).append("\n");
+            }
+            rows = parseCSVFile(sb.toString());
+        } catch (IOException e) {
+            System.err.println("Warning: Could not read " + path);
+        }
+        return rows;
     }
 
     private List<String[]> parseCSVFile(String content) {
@@ -206,13 +160,11 @@ public class CSVDataLoader {
             if (c == '\"') {
                 inQuotes = !inQuotes;
             } else if (c == ',' && !inQuotes) {
-                tokens.add(sb.toString().trim());
+                tokens.add(sb.toString().trim().replaceAll("^\"|\"$", ""));
                 sb.setLength(0);
             } else if ((c == '\n' || c == '\r') && !inQuotes) {
-                if (c == '\r' && i + 1 < content.length() && content.charAt(i + 1) == '\n') {
-                    i++; 
-                }
-                tokens.add(sb.toString().trim());
+                if (c == '\r' && i + 1 < content.length() && content.charAt(i + 1) == '\n') i++;
+                tokens.add(sb.toString().trim().replaceAll("^\"|\"$", ""));
                 sb.setLength(0);
                 if (!tokens.isEmpty() && !(tokens.size() == 1 && tokens.get(0).isEmpty())) {
                     rows.add(tokens.toArray(new String[0]));
@@ -223,7 +175,7 @@ public class CSVDataLoader {
             }
         }
         if (sb.length() > 0) {
-            tokens.add(sb.toString().trim());
+            tokens.add(sb.toString().trim().replaceAll("^\"|\"$", ""));
             rows.add(tokens.toArray(new String[0]));
         }
         return rows;

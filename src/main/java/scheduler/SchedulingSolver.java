@@ -20,11 +20,24 @@ public class SchedulingSolver {
         // Pull your arrays/lists out of the dataset object 
         String[] exams = dataset.exams;         
         String[] timeslots = dataset.timeslots;  
+        String[] timeslotDays = dataset.timeslotDays;  
+        String[] timeslotTimes = dataset.timeslotTimes;
         String[] rooms = dataset.rooms;   
         int[] examInstructors = dataset.examInstructors;       
         int[] examStudents = dataset.examStudents; 
         int[] roomCapacities = dataset.roomCapacities;
-        
+        // Initialize the conflicts matrix
+boolean[][] conflicts = new boolean[exams.length][exams.length];
+
+for (int i = 0; i < exams.length; i++) {
+    for (int j = i + 1; j < exams.length; j++) {
+        // If both exams have the same instructor, mark them as conflicting
+        if (examInstructors[i] == examInstructors[j]) {
+            conflicts[i][j] = true;
+            conflicts[j][i] = true; // Make it symmetric
+        }
+    }
+}
         // 3. Initialize the Google CP-SAT Optimization Model
         CpModel model = new CpModel();
         
@@ -86,6 +99,33 @@ public class SchedulingSolver {
                 model.addLessOrEqual(LinearExpr.sum(examsInRoomSlot),1);
             }
         }
+        //constriant 4
+                for (int t = 0; t < timeslots.length; t++) {
+            for (int i = 0; i < exams.length; i++) {
+                for (int j = i + 1; j < exams.length; j++) {
+                    if (conflicts[i][j]) {
+                        
+                        // Gather all rooms for exam e_i at timeslot t
+                        BoolVar[] roomsForEi = new BoolVar[rooms.length];
+                        // Gather all rooms for exam e_j at timeslot t
+                        BoolVar[] roomsForEj = new BoolVar[rooms.length];
+                        
+                        for (int r = 0; r < rooms.length; r++) {
+                            roomsForEi[r] = x[i][t][r];
+                            roomsForEj[r] = x[j][t][r];
+                        }
+                        
+                        // Combine both arrays into one linear expression sum
+                        LinearExpr totalActiveExams = LinearExpr.sum(
+                            new LinearExpr[]{LinearExpr.sum(roomsForEi), LinearExpr.sum(roomsForEj)}
+                        );
+                        
+                        model.addLessOrEqual(totalActiveExams, 1);
+                    }
+                }
+            }
+        }
+
         // --- 3. Solve and Output Results ---
         CpSolver solver = new CpSolver();
         CpSolverStatus status = solver.solve(model);
@@ -96,8 +136,11 @@ public class SchedulingSolver {
                 boolean timeslotHasExams = false;
                 StringBuilder slotOutput = new StringBuilder();
                 
-                slotOutput.append("\nTimeslot: ").append(timeslots[t]).append("\n");
-                
+       slotOutput.append("\nTimeslot: ")
+                .append(timeslotDays[t])
+                .append(" at ")
+                .append(timeslotTimes[t])
+                .append("\n");                
                 for (int r = 0; r < rooms.length; r++) {
                     for (int e = 0; e < exams.length; e++) {
                         if (solver.value(x[e][t][r]) == 1) {
