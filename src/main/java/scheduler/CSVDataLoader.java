@@ -13,6 +13,7 @@ public class CSVDataLoader {
         public String[] timeslots;
         public String[] rooms;
         public int[] examStudents;
+        public int[] examInstructors;
         public int[] roomCapacities;
         public String[] courseDepartments;
     }
@@ -41,6 +42,9 @@ public class CSVDataLoader {
         // 3. Load Student Programs
         List<String> studentPrograms = loadSingleColumn("dataset/students.csv", "program_name");
 
+        // 4. Load Instructor Programs
+        List<String> instructorsPrograms = loadSingleColumn("dataset/instructors.csv", "department");
+
         // 4. Calculate realistic exam student counts (bounded to fit typical room sizes)
         data.examStudents = new int[data.exams.length];
         for (int i = 0; i < data.exams.length; i++) {
@@ -65,7 +69,7 @@ public class CSVDataLoader {
             data.examStudents[i] = count;
         }
 
-        System.out.println("✅ All CSV files safely loaded with corrected capacities and exam sizes!");
+        System.out.println("All CSV files safely loaded with corrected capacities and exam sizes!");
         return data;
     }
 
@@ -109,7 +113,7 @@ public class CSVDataLoader {
                 }
             }
         } catch (IOException | NumberFormatException e) {
-            System.err.println("❌ Error loading classrooms: " + e.getMessage());
+            System.err.println("Error loading classrooms: " + e.getMessage());
         }
     }
 
@@ -151,7 +155,7 @@ public class CSVDataLoader {
                 }
             }
         } catch (IOException e) {
-            System.err.println("❌ Error loading courses: " + e.getMessage());
+            System.err.println("Error loading courses: " + e.getMessage());
         }
     }
 
@@ -186,7 +190,7 @@ public class CSVDataLoader {
                 }
             }
         } catch (IOException e) {
-            System.err.println("❌ Error reading file " + filePath + ": " + e.getMessage());
+            System.err.println("Error reading file " + filePath + ": " + e.getMessage());
         }
         return records;
     }

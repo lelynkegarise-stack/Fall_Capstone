@@ -20,7 +20,8 @@ public class SchedulingSolver {
         // Pull your arrays/lists out of the dataset object 
         String[] exams = dataset.exams;         
         String[] timeslots = dataset.timeslots;  
-        String[] rooms = dataset.rooms;          
+        String[] rooms = dataset.rooms;   
+        int[] examInstructors = dataset.examInstructors;       
         int[] examStudents = dataset.examStudents; 
         int[] roomCapacities = dataset.roomCapacities;
         
@@ -60,7 +61,7 @@ public class SchedulingSolver {
 
         for (int i = 0; i < exams.length; i++) {
             if (examStudents[i] > maxRoomCap) {
-                System.out.println("⚠️ Warning: Exam " + exams[i] + " has " + examStudents[i] + " students, but the largest room only holds " + maxRoomCap + "!");
+                System.out.println("Warning: Exam " + exams[i] + " has " + examStudents[i] + " students, but the largest room only holds " + maxRoomCap + "!");
             }
         }
 
