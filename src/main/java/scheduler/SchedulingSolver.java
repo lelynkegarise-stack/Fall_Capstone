@@ -7,7 +7,6 @@ import com.google.ortools.sat.CpSolver;
 import com.google.ortools.sat.CpSolverStatus; 
 import com.google.ortools.sat.LinearExpr;
 
-
 public class SchedulingSolver {
     public static void main(String[] args) {
         // 1. Initialize OR-Tools core native backend
@@ -18,26 +17,28 @@ public class SchedulingSolver {
         CSVDataLoader.ScheduleData dataset = loader.loadAllDatasets();
 
         // Pull your arrays/lists out of the dataset object 
-        String[] exams = dataset.exams;         
+        String[] exams = dataset.exams;        
         String[] timeslots = dataset.timeslots;  
         String[] timeslotDays = dataset.timeslotDays;  
         String[] timeslotTimes = dataset.timeslotTimes;
         String[] rooms = dataset.rooms;   
-        int[] examInstructors = dataset.examInstructors;       
+        int[] examInstructors = dataset.examInstructors;        
         int[] examStudents = dataset.examStudents; 
         int[] roomCapacities = dataset.roomCapacities;
-        // Initialize the conflicts matrix
-boolean[][] conflicts = new boolean[exams.length][exams.length];
 
-for (int i = 0; i < exams.length; i++) {
-    for (int j = i + 1; j < exams.length; j++) {
-        // If both exams have the same instructor, mark them as conflicting
-        if (examInstructors[i] == examInstructors[j]) {
-            conflicts[i][j] = true;
-            conflicts[j][i] = true; // Make it symmetric
+        // Initialize the conflicts matrix
+        boolean[][] conflicts = new boolean[exams.length][exams.length];
+
+        for (int i = 0; i < exams.length; i++) {
+            for (int j = i + 1; j < exams.length; j++) {
+                // If both exams have the same instructor, mark them as conflicting
+                if (examInstructors[i] == examInstructors[j]) {
+                    conflicts[i][j] = true;
+                    conflicts[j][i] = true; // Make it symmetric
+                }
+            }
         }
-    }
-}
+
         // 3. Initialize the Google CP-SAT Optimization Model
         CpModel model = new CpModel();
         
@@ -52,7 +53,8 @@ for (int i = 0; i < exams.length; i++) {
         }
 
         // --- 2. Apply Constraints ---
-        // Constraint 1 (Exam uniqueness - every exam must be scheduled exactly once)
+        
+        // Constraint 1: Every exam must be scheduled exactly once
         for (int e = 0; e < exams.length; e++) {
             BoolVar[] allPossibleSlots = new BoolVar[timeslots.length * rooms.length];
             int idx = 0;
@@ -78,49 +80,40 @@ for (int i = 0; i < exams.length; i++) {
             }
         }
 
-        //Room Capacity
+        // Constraint 2: Room Capacity
         for (int e = 0; e < exams.length; e++) {
             for (int t = 0; t < timeslots.length; t++) {
                 for (int r = 0; r < rooms.length; r++) {
-                    // Simple, fast array lookup since roomCapacities[r] directly maps to rooms[r]
                     if (examStudents[e] > roomCapacities[r]) {
                         model.addEquality(x[e][t][r], 0);
                     }
                 }
             }
         }
-        // no room double booking 
-        for (int t=0; t<timeslots.length; t++){
-            for(int r=0;r<rooms.length;r++){
+
+        // Constraint 3: No room double booking 
+        for (int t = 0; t < timeslots.length; t++) {
+            for (int r = 0; r < rooms.length; r++) {
                 BoolVar[] examsInRoomSlot = new BoolVar[exams.length];
-                for (int e=0; e<exams.length;e++){
-                    examsInRoomSlot[e]=x[e][t][r];
+                for (int e = 0; e < exams.length; e++) {
+                    examsInRoomSlot[e] = x[e][t][r];
                 }
-                model.addLessOrEqual(LinearExpr.sum(examsInRoomSlot),1);
+                model.addLessOrEqual(LinearExpr.sum(examsInRoomSlot), 1);
             }
         }
-        //constriant 4
-                for (int t = 0; t < timeslots.length; t++) {
+
+        // Constraint 4: Instructor Conflict Constraint (Cleaned up with flat array)
+        for (int t = 0; t < timeslots.length; t++) {
             for (int i = 0; i < exams.length; i++) {
                 for (int j = i + 1; j < exams.length; j++) {
                     if (conflicts[i][j]) {
-                        
-                        // Gather all rooms for exam e_i at timeslot t
-                        BoolVar[] roomsForEi = new BoolVar[rooms.length];
-                        // Gather all rooms for exam e_j at timeslot t
-                        BoolVar[] roomsForEj = new BoolVar[rooms.length];
-                        
+                        BoolVar[] conflictVars = new BoolVar[rooms.length * 2];
+                        int idx = 0;
                         for (int r = 0; r < rooms.length; r++) {
-                            roomsForEi[r] = x[i][t][r];
-                            roomsForEj[r] = x[j][t][r];
+                            conflictVars[idx++] = x[i][t][r];
+                            conflictVars[idx++] = x[j][t][r];
                         }
-                        
-                        // Combine both arrays into one linear expression sum
-                        LinearExpr totalActiveExams = LinearExpr.sum(
-                            new LinearExpr[]{LinearExpr.sum(roomsForEi), LinearExpr.sum(roomsForEj)}
-                        );
-                        
-                        model.addLessOrEqual(totalActiveExams, 1);
+                        model.addLessOrEqual(LinearExpr.sum(conflictVars), 1);
                     }
                 }
             }
@@ -131,22 +124,25 @@ for (int i = 0; i < exams.length; i++) {
         CpSolverStatus status = solver.solve(model);
 
         if (status == CpSolverStatus.OPTIMAL || status == CpSolverStatus.FEASIBLE) {
-            System.out.println("--- Successfully Scheduled Exams ---");
+            System.out.println("\n--- Successfully Scheduled Exams ---");
             for (int t = 0; t < timeslots.length; t++) {
                 boolean timeslotHasExams = false;
                 StringBuilder slotOutput = new StringBuilder();
                 
-       slotOutput.append("\nTimeslot: ")
-                .append(timeslotDays[t])
-                .append(" at ")
-                .append(timeslotTimes[t])
-                .append("\n");                
+                slotOutput.append("\nTimeslot: ")
+                          .append(timeslotDays[t])
+                          .append(" at ")
+                          .append(timeslotTimes[t])
+                          .append("\n");                
+                
                 for (int r = 0; r < rooms.length; r++) {
                     for (int e = 0; e < exams.length; e++) {
                         if (solver.value(x[e][t][r]) == 1) {
                             slotOutput.append("  * Room ").append(rooms[r])
                                       .append(" -> Exam ").append(exams[e])
-                                      .append(" (").append(examStudents[e]).append(" students)\n");
+                                      .append(" (Students: ").append(examStudents[e])
+                                      .append(", Instructor ID: ").append(examInstructors[e])
+                                      .append(")\n");
                             timeslotHasExams = true;
                         }
                     }
