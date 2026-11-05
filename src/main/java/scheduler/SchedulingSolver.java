@@ -16,11 +16,24 @@ public class SchedulingSolver {
     public static void main(String[] args) {
         // 1. Initialize OR-Tools core native backend
         Loader.loadNativeLibraries();
-
-        // 2. Instantiate and run your separate CSV loader file
+       // 2. Instantiate and run your separate CSV loader file
         CSVDataLoader loader = new CSVDataLoader();
         CSVDataLoader.ScheduleData dataset = loader.loadAllDatasets();
 
+        // Convert dataset.examStudentLists (String[][]) into List<String>[] for the analyzer
+        List<String>[] studentListsList = new List[dataset.examStudentLists.length];
+        for (int i = 0; i < dataset.examStudentLists.length; i++) {
+            List<String> list = new ArrayList<>();
+            for (String student : dataset.examStudentLists[i]) {
+                if (student != null && !student.trim().isEmpty()) {
+                    list.add(student);
+                }
+            }
+            studentListsList[i] = list;
+        }
+
+        int[][] matrix = ConflictMatrixAnalyzer.computePrimalConflictMatrix(dataset.exams, studentListsList);
+        ConflictMatrixAnalyzer.exportMatrixToCSV(matrix, dataset.exams, "conflict_matrix.csv");
         // Pull your arrays out of the dataset object 
         String[] exams = dataset.exams;        
         String[] timeslots = dataset.timeslots;  
@@ -132,10 +145,10 @@ public class SchedulingSolver {
                 for (int r = 0; r < rooms.length; r++) {
                     for (int e = 0; e < exams.length; e++) {
                         if (solver.value(x[e][t][r]) == 1) {
-                            slotOutput.append("  🏛️ Room: ").append(rooms[r])
-                                      .append(" | 📚 Exam: ").append(exams[e])
+                            slotOutput.append("  🏛️ Room: ").append(rooms[r])                                      .append(" | 📚 Exam: ").append(exams[e])
                                       .append("\n     ↳ Instructor ID: ").append(examInstructorIds[e])
                                       .append(" | Total Students: ").append(examStudents[e])
+                                      .append(" | Capacity: ").append(roomCapacities[r])
                                       .append("\n     ↳ Enrolled Student IDs:\n");
 
                             for (String studentId : dataset.examStudentLists[e]) {

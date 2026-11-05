@@ -8,6 +8,17 @@ import java.util.List;
 
 public class CSVDataLoader {
 
+    private String dataDir = "dataset/"; // Default fallback directory
+
+    // Constructor to accept custom dataset paths (used by BatchSchedulerRunner)
+    public CSVDataLoader(String dataDir) {
+        this.dataDir = dataDir.endsWith("/") ? dataDir : dataDir + "/";
+    }
+
+    // Default constructor for standalone use
+    public CSVDataLoader() {
+    }
+
     public static class ScheduleData {
         public String[] exams;
         public String[] timeslots;
@@ -27,7 +38,7 @@ public class CSVDataLoader {
 
         // 1. Load Timeslots
         List<String> tIds = new ArrayList<>(), tDays = new ArrayList<>(), tTimes = new ArrayList<>();
-        loadTimeslotData("dataset/timeslot.csv", tIds, tDays, tTimes);
+        loadTimeslotData(dataDir + "timeslot.csv", tIds, tDays, tTimes);
         data.timeslots = tIds.toArray(new String[0]);
         data.timeslotDays = tDays.toArray(new String[0]);
         data.timeslotTimes = tTimes.toArray(new String[0]);
@@ -35,19 +46,19 @@ public class CSVDataLoader {
         // 2. Load Classrooms & Capacities
         List<String> roomsList = new ArrayList<>();
         List<Integer> capsList = new ArrayList<>();
-        loadClassroomData("dataset/classrooms.csv", roomsList, capsList);
+        loadClassroomData(dataDir + "classrooms.csv", roomsList, capsList);
         data.rooms = roomsList.toArray(new String[0]);
         data.roomCapacities = capsList.stream().mapToInt(Integer::intValue).toArray();
 
         // 3. Load Courses & Departments
         List<String> coursesList = new ArrayList<>();
         List<String> deptsList = new ArrayList<>();
-        loadCourseData("dataset/courses.csv", coursesList, deptsList);
+        loadCourseData(dataDir + "courses.csv", coursesList, deptsList);
         data.exams = coursesList.toArray(new String[0]);
         data.courseDepartments = deptsList.toArray(new String[0]);
 
-        // 4. Load Students Data (Using student_id at index 0, program_name at index 6)
-        List<String[]> studentRows = readCSV("dataset/students.csv");
+        // 4. Load Students Data
+        List<String[]> studentRows = readCSV(dataDir + "students.csv");
         List<String> studentIds = new ArrayList<>();
         List<String> studentPrograms = new ArrayList<>();
 
@@ -69,8 +80,8 @@ public class CSVDataLoader {
             }
         }
 
-        // 5. Load Instructors Data (Extracting real instructor_id at index 0, department at index 5)
-        List<String[]> instructorRows = readCSV("dataset/instructors.csv");
+        // 5. Load Instructors Data
+        List<String[]> instructorRows = readCSV(dataDir + "instructors.csv");
         List<String> realInstructorIds = new ArrayList<>();
         List<String> instructorDepts = new ArrayList<>();
 
@@ -152,7 +163,7 @@ public class CSVDataLoader {
             data.examInstructorIds[i] = realInstId;
         }
 
-        System.out.println("Dataset successfully loaded, parsed, and mapped!");
+        System.out.println("Dataset from [" + dataDir + "] successfully loaded, parsed, and mapped!");
         return data;
     }
 
