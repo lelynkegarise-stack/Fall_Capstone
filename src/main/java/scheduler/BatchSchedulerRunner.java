@@ -3,7 +3,8 @@ package scheduler;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
 
 import com.google.ortools.Loader;
 
@@ -48,7 +49,7 @@ public class BatchSchedulerRunner {
                 List<int[]> groups = ConflictGroups.build(data, includeStudents);
 
                 ScheduleResult greedy = GreedyScheduler.solve(data, groups, name);
-                ScheduleResult cp = CpSatScheduler.solve(data, groups, name, timeLimit, workers);
+                ScheduleResult cp = ScehdulingSolver.solve(data, groups, name, timeLimit, workers);
 
                 System.out.println(greedy);
                 System.out.println(cp);
