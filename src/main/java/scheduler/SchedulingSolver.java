@@ -1,173 +1,109 @@
 package scheduler;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
-import com.google.ortools.Loader;
 import com.google.ortools.sat.BoolVar;
 import com.google.ortools.sat.CpModel;
 import com.google.ortools.sat.CpSolver;
-import com.google.ortools.sat.CpSolverStatus; 
+import com.google.ortools.sat.CpSolverStatus;
 import com.google.ortools.sat.LinearExpr;
+import com.google.ortools.sat.Literal;
 
-public class SchedulingSolver {
-    public static void main(String[] args) {
-        // 1. Initialize OR-Tools core native backend
-        Loader.loadNativeLibraries();
-       // 2. Instantiate and run your separate CSV loader file
-        CSVDataLoader loader = new CSVDataLoader();
-        CSVDataLoader.ScheduleData dataset = loader.loadAllDatasets();
+/**
+ * Leaner version of your model.
+ *
+ * Changes vs. the original:
+ *  - x[e][t][r] is only created when the room is big enough (no "== 0" constraints).
+ *  - y[e][t] = "exam e is in timeslot t" (sum over rooms). Conflict groups are
+ *    posted on y with AddAtMostOne, which is much smaller than summing every room.
+ *  - Takes the shared conflict groups (instructor + optional student) so it is
+ *    comparable to the greedy search.
+ *  - Objective: minimise the number of timeslots used (a pure feasibility model
+ *    gives you nothing to compare besides runtime). Time limit + workers are set.
+ */
+public class ScehdulingSolver {
 
-        // Convert dataset.examStudentLists (String[][]) into List<String>[] for the analyzer
-        List<String>[] studentListsList = new List[dataset.examStudentLists.length];
-        for (int i = 0; i < dataset.examStudentLists.length; i++) {
-            List<String> list = new ArrayList<>();
-            for (String student : dataset.examStudentLists[i]) {
-                if (student != null && !student.trim().isEmpty()) {
-                    list.add(student);
-                }
-            }
-            studentListsList[i] = list;
-        }
+    public static ScheduleResult solve(CSVDataLoader.ScheduleData d, List<int[]> groups,
+                                       String datasetName, double timeLimitSec, int workers) {
+        long t0 = System.nanoTime();
+        int E = d.exams.length, T = d.timeslots.length, R = d.rooms.length;
 
-        int[][] matrix = ConflictMatrixAnalyzer.computePrimalConflictMatrix(dataset.exams, studentListsList);
-        ConflictMatrixAnalyzer.exportMatrixToCSV(matrix, dataset.exams, "conflict_matrix.csv");
-        // Pull your arrays out of the dataset object 
-        String[] exams = dataset.exams;        
-        String[] timeslots = dataset.timeslots;  
-        String[] timeslotDays = dataset.timeslotDays;  
-        String[] timeslotTimes = dataset.timeslotTimes;
-        String[] rooms = dataset.rooms;   
-        String[] examInstructorIds = dataset.examInstructorIds;      
-        int[] examStudents = dataset.examStudents; 
-        int[] roomCapacities = dataset.roomCapacities;
+        ScheduleResult res = new ScheduleResult();
+        res.dataset = datasetName;
+        res.method = "CP-SAT";
+        res.exams = E; res.timeslots = T; res.rooms = R;
+        res.slotOf = new int[E];
+        res.roomOf = new int[E];
+        Arrays.fill(res.slotOf, -1);
+        Arrays.fill(res.roomOf, -1);
 
-        // 3. Initialize the Google CP-SAT Optimization Model
         CpModel model = new CpModel();
-        
-        // --- 1. Define Decision Variables ---
-        BoolVar[][][] x = new BoolVar[exams.length][timeslots.length][rooms.length];
-        for (int e = 0; e < exams.length; e++) {
-            for (int t = 0; t < timeslots.length; t++) {
-                for (int r = 0; r < rooms.length; r++) {
-                    x[e][t][r] = model.newBoolVar(exams[e] + "_" + timeslots[t] + "_" + rooms[r]);
+        BoolVar[][][] x = new BoolVar[E][T][R];
+        BoolVar[][] y = new BoolVar[E][T];
+        BoolVar[] used = new BoolVar[T];
+        for (int t = 0; t < T; t++) used[t] = model.newBoolVar("used_" + t);
+
+        List<List<BoolVar>> roomSlot = new ArrayList<>(); // index t*R + r
+        for (int i = 0; i < T * R; i++) roomSlot.add(new ArrayList<>());
+
+        for (int e = 0; e < E; e++) {
+            List<Integer> fitRooms = new ArrayList<>();
+            for (int r = 0; r < R; r++) if (d.roomCapacities[r] >= d.examStudents[e]) fitRooms.add(r);
+
+            if (fitRooms.isEmpty()) { // no room can ever hold this exam
+                res.status = "INFEASIBLE";
+                res.computeMetrics(d);
+                res.runtimeMs = (System.nanoTime() - t0) / 1e6;
+                return res;
+            }
+
+            for (int t = 0; t < T; t++) {
+                y[e][t] = model.newBoolVar("y_" + e + "_" + t);
+                List<BoolVar> perRoom = new ArrayList<>();
+                for (int r : fitRooms) {
+                    x[e][t][r] = model.newBoolVar("x_" + e + "_" + t + "_" + r);
+                    perRoom.add(x[e][t][r]);
+                    roomSlot.get(t * R + r).add(x[e][t][r]);
                 }
+                model.addEquality(LinearExpr.sum(perRoom.toArray(new BoolVar[0])), y[e][t]);
+                model.addImplication(y[e][t], used[t]);
+            }
+            model.addExactlyOne(y[e]); // every exam exactly once
+        }
+
+        // No room double booking
+        for (List<BoolVar> l : roomSlot)
+            if (l.size() > 1) model.addAtMostOne(l.toArray(new Literal[0]));
+
+        // Instructor / student conflicts: one group, one timeslot, at most one exam
+        for (int[] g : groups) {
+            for (int t = 0; t < T; t++) {
+                Literal[] lits = new Literal[g.length];
+                for (int i = 0; i < g.length; i++) lits[i] = y[g[i]][t];
+                model.addAtMostOne(lits);
             }
         }
 
-        // --- 2. Apply Constraints ---
-        
-        // Constraint 1: Every exam must be scheduled exactly once
-        for (int e = 0; e < exams.length; e++) {
-            BoolVar[] allPossibleSlots = new BoolVar[timeslots.length * rooms.length];
-            int idx = 0;
-            for (int t = 0; t < timeslots.length; t++) {
-                for (int r = 0; r < rooms.length; r++) {
-                    allPossibleSlots[idx] = x[e][t][r];
-                    idx++;
-                }
-            }
-            model.addExactlyOne(allPossibleSlots);
-        }
+        // Objective: fewest timeslots used
+        model.minimize(LinearExpr.sum(used));
 
-        // Constraint 2: Room Capacity
-        for (int e = 0; e < exams.length; e++) {
-            for (int t = 0; t < timeslots.length; t++) {
-                for (int r = 0; r < rooms.length; r++) {
-                    if (examStudents[e] > roomCapacities[r]) {
-                        model.addEquality(x[e][t][r], 0);
-                    }
-                }
-            }
-        }
-
-        // Constraint 3: No room double booking 
-        for (int t = 0; t < timeslots.length; t++) {
-            for (int r = 0; r < rooms.length; r++) {
-                BoolVar[] examsInRoomSlot = new BoolVar[exams.length];
-                for (int e = 0; e < exams.length; e++) {
-                    examsInRoomSlot[e] = x[e][t][r];
-                }
-                model.addLessOrEqual(LinearExpr.sum(examsInRoomSlot), 1);
-            }
-        }
-
-        // Constraint 4: Dynamic Instructor Conflict Constraint (Zero-Tolerance Grouping)
-        Set<String> uniqueInstructors = new HashSet<>();
-        for (String id : examInstructorIds) {
-            if (id != null && !id.trim().isEmpty()) {
-                uniqueInstructors.add(id.trim().toLowerCase());
-            }
-        }
-
-        for (int t = 0; t < timeslots.length; t++) {
-            for (String instId : uniqueInstructors) {
-                List<BoolVar> instructorExamSlots = new ArrayList<>();
-                for (int e = 0; e < exams.length; e++) {
-                    String eInst = examInstructorIds[e] != null ? examInstructorIds[e].trim().toLowerCase() : "";
-                    if (eInst.equals(instId)) {
-                        for (int r = 0; r < rooms.length; r++) {
-                            instructorExamSlots.add(x[e][t][r]);
-                        }
-                    }
-                }
-                if (instructorExamSlots.size() > 1) {
-                    model.addLessOrEqual(
-                        LinearExpr.sum(instructorExamSlots.toArray(new BoolVar[0])), 
-                        1
-                    );
-                }
-            }
-        }
-
-        // --- 3. Solve and Output Results ---
         CpSolver solver = new CpSolver();
+        solver.getParameters().setMaxTimeInSeconds(timeLimitSec);
+        solver.getParameters().setNumWorkers(workers);
         CpSolverStatus status = solver.solve(model);
+        res.status = status.toString();
+
         if (status == CpSolverStatus.OPTIMAL || status == CpSolverStatus.FEASIBLE) {
-            ScheduleValidator.validateSchedule(dataset, solver, x);
-            System.out.println("\n================================================");
-            System.out.println("          EXAM SCHEDULE TIMETABLE REPORT        ");
-            System.out.println("================================================");
-
-            for (int t = 0; t < timeslots.length; t++) {
-                boolean timeslotHasExams = false;
-                StringBuilder slotOutput = new StringBuilder();
-                
-                slotOutput.append("\n📅 TIMESLOT: ")
-                          .append(timeslotDays[t])
-                          .append(" @ ")
-                          .append(timeslotTimes[t])
-                          .append("\n");
-                slotOutput.append("------------------------------------------------\n");                
-                
-                for (int r = 0; r < rooms.length; r++) {
-                    for (int e = 0; e < exams.length; e++) {
-                        if (solver.value(x[e][t][r]) == 1) {
-                            slotOutput.append("  🏛️ Room: ").append(rooms[r])                                      .append(" | 📚 Exam: ").append(exams[e])
-                                      .append("\n     ↳ Instructor ID: ").append(examInstructorIds[e])
-                                      .append(" | Total Students: ").append(examStudents[e])
-                                      .append(" | Capacity: ").append(roomCapacities[r])
-                                      .append("\n     ↳ Enrolled Student IDs:\n");
-
-                            for (String studentId : dataset.examStudentLists[e]) {
-                                slotOutput.append("         • ").append(studentId).append("\n");
-                            }
-                            slotOutput.append("\n");
-
-                            timeslotHasExams = true;
+            for (int e = 0; e < E; e++)
+                for (int t = 0; t < T; t++)
+                    for (int r = 0; r < R; r++)
+                        if (x[e][t][r] != null && solver.value(x[e][t][r]) == 1) {
+                            res.slotOf[e] = t;
+                            res.roomOf[e] = r;
                         }
-                    }
-                }
-                
-                if (timeslotHasExams) {
-                    System.out.print(slotOutput.toString());
-                }
-            }
-            System.out.println("================================================");
-        } else {
-            System.out.println("No valid timetable could be found with the current constraints.");
         }
+        res.computeMetrics(d);
+        res.runtimeMs = (System.nanoTime() - t0) / 1e6;
+        return res;
     }
 }
