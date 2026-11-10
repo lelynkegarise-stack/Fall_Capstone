@@ -1,48 +1,62 @@
 package scheduler;
 
-import java.util.List;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.*;
 
+import com.google.ortools.Loader;
+
+/**
+ * Runs greedy + CP-SAT on every sub-folder of a datasets root and writes results.csv.
+ *
+ * Expected layout:
+ *   datasets/
+ *     small/   timeslot.csv classrooms.csv courses.csv students.csv instructors.csv
+ *     medium/  ...
+ *     large/   ...
+ *
+ * Usage: java scheduler.BatchSchedulerRunner [datasetsRoot] [timeLimitSec] [includeStudents]
+ */
 public class BatchSchedulerRunner {
-    public static void main(String[] args) {
-        // List the relative paths to your 5 different dataset folders
-        String[] datasetPaths = {
-            "datasets/ds1",
-            //"datasets/ds2",
-            //"datasets/ds3",
-           // "datasets/ds4",
-            //"datasets/ds5"
-        };
 
-        System.out.println("==================================================");
-        System.out.println("          MULTI-DATASET BATCH RUNNER              ");
-        System.out.println("==================================================");
+    public static void main(String[] args) throws IOException {
+        String root = args.length > 0 ? args[0] : "datasets";
+        double timeLimit = args.length > 1 ? Double.parseDouble(args[1]) : 60.0;
+        boolean includeStudents = args.length > 2 ? Boolean.parseBoolean(args[2]) : true;
+        int workers = Runtime.getRuntime().availableProcessors();
 
-        for (int i = 0; i < datasetPaths.length; i++) {
-            System.out.println("\n--- Processing Dataset " + (i + 1) + " (" + datasetPaths[i] + ") ---");
-            
-            try {
-                // Pass the specific dataset path to your updated loader
-                CSVDataLoader loader = new CSVDataLoader(datasetPaths[i]);
-                CSVDataLoader.ScheduleData data = loader.loadAllDatasets();
+        Loader.loadNativeLibraries(); // once for the whole run
 
-                long startTime = System.currentTimeMillis();
-                List<GreedyScheduler.ScheduleAssignment> schedule = GreedyScheduler.runGreedyScheduler(data);
-                long endTime = System.currentTimeMillis();
+        File[] dirs = new File(root).listFiles(File::isDirectory);
+        if (dirs == null || dirs.length == 0) {
+            System.err.println("No dataset folders found in " + root);
+            return;
+        }
+        Arrays.sort(dirs);
 
-                // Calculate metrics
-                int totalExams = data.exams.length;
-                int scheduledExams = schedule.size();
-                double successRate = totalExams > 0 ? ((double) scheduledExams / totalExams) * 100.0 : 0.0;
+        // Warm up the JIT so greedy timings aren't dominated by class loading
+        CSVDataLoader.ScheduleData warm = new CSVDataLoader(dirs[0].getPath()).loadAllDatasets();
+        GreedyScheduler.solve(warm, ConflictGroups.build(warm, includeStudents), "warmup");
 
-                System.out.printf("📊 Result -> Scheduled: %d/%d (%.1f%%) | Execution Time: %d ms\n", 
-                        scheduledExams, totalExams, successRate, (endTime - startTime));
+        try (PrintWriter out = new PrintWriter("results.csv")) {
+            out.println(ScheduleResult.csvHeader());
 
-            } catch (Exception e) {
-                System.err.println("❌ Dataset " + (i + 1) + " FAILED. Error: " + e.getMessage());
-                e.printStackTrace();
+            for (File dir : dirs) {
+                String name = dir.getName();
+                CSVDataLoader.ScheduleData data = new CSVDataLoader(dir.getPath()).loadAllDatasets();
+                List<int[]> groups = ConflictGroups.build(data, includeStudents);
+
+                ScheduleResult greedy = GreedyScheduler.solve(data, groups, name);
+                ScheduleResult cp = CpSatScheduler.solve(data, groups, name, timeLimit, workers);
+
+                System.out.println(greedy);
+                System.out.println(cp);
+                out.println(greedy.toCsvRow());
+                out.println(cp.toCsvRow());
+                out.flush();
             }
         }
-        System.out.println("\n==================================================");
-        System.out.println("Batch execution complete!");
+        System.out.println("\nWrote results.csv");
     }
 }
