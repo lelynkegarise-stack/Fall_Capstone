@@ -1,0 +1,52 @@
+# Courses Data,,,
+course_id,course_name,department,credits
+C001,Electromagnetism,Physics,4
+C002,Calculus II,Mathematics,3
+C003,Software Engineering,Computer Science,4
+C004,Parallel Computing,Computer Science,3
+C005,Environmental Chemistry,Chemistry,4
+C006,Compilers,Computer Science,4
+C007,Data Structures,Computer Science,4
+C008,Relativity,Physics,4
+C009,Green Chemistry,Chemistry,3
+C010,Ecology,Biology,4
+C011,Virology,Biology,4
+C012,Optics,Physics,4
+C013,Condensed Matter,Physics,4
+C014,Electrodynamics,Physics,3
+C015,Data Mining,Computer Science,4
+C016,Real Analysis,Mathematics,3
+C017,Set Theory,Mathematics,4
+C018,Botany,Biology,3
+C019,Stochastic Processes,Mathematics,4
+C020,Plasma Physics,Physics,3
+C021,Particle Physics,Physics,3
+C022,Biotechnology,Biology,4
+C023,Computer Vision,Computer Science,4
+C024,Polymer Chemistry,Chemistry,4
+C025,Combinatorics,Mathematics,3
+C026,Nuclear Physics,Physics,4
+C027,Ecophysiology,Biology,3
+C028,Functional Analysis,Mathematics,4
+C029,Quantum Physics,Physics,3
+C030,Chemical Kinetics,Chemistry,3
+C031,Embedded Systems,Computer Science,3
+C032,Cybersecurity,Computer Science,3
+C033,Thermodynamics,Physics,4
+C034,Geometry,Mathematics,4
+C035,Biophysics,Physics,3
+C036,Bioinformatics,Biology,4
+C037,Neuroscience,Biology,3
+C038,Databases,Computer Science,4
+C039,Spectroscopy,Chemistry,4
+C040,Cryptography,Computer Science,3
+C041,Cell Biology,Biology,4
+C042,Genetics,Biology,3
+C043,Organometallic Chemistry,Chemistry,3
+C044,Marine Biology,Biology,4
+C045,Web Development,Computer Science,4
+C046,AI,Computer Science,4
+C047,Topology,Mathematics,4
+C048,Machine Learning,Computer Science,4
+C049,Solid State Physics,Physics,4
+C050,Theory of Computation,Computer Science,3

@@ -1,0 +1,502 @@
+# Students Data,,,,
+student_id,first_name,last_name,department,year
+S001,Charlotte,Hernandez,Computer Science,2
+S002,Liam,Wilson,Computer Science,3
+S003,Ava,Brown,Computer Science,1
+S004,Charlotte,Martinez,Computer Science,4
+S005,Charlotte,Wilson,Computer Science,1
+S006,Michael,Rodriguez,Computer Science,3
+S007,Sophia,Anderson,Computer Science,3
+S008,Emma,Moore,Computer Science,2
+S009,Charlotte,Johnson,Computer Science,2
+S010,David,Taylor,Computer Science,1
+S011,James,Anderson,Computer Science,1
+S012,Ava,Thomas,Computer Science,1
+S013,Isabella,Rodriguez,Computer Science,1
+S014,Ethan,Hernandez,Computer Science,4
+S015,Noah,Anderson,Computer Science,1
+S016,John,Moore,Computer Science,1
+S017,Sophia,Lopez,Computer Science,2
+S018,Sophia,Thomas,Computer Science,2
+S019,Ava,Martinez,Computer Science,2
+S020,Ava,Moore,Computer Science,1
+S021,Olivia,Moore,Computer Science,4
+S022,Mia,Garcia,Computer Science,2
+S023,Sophia,Johnson,Computer Science,3
+S024,James,Martinez,Computer Science,1
+S025,David,Hernandez,Computer Science,3
+S026,David,Martinez,Computer Science,4
+S027,John,Johnson,Computer Science,4
+S028,Liam,Davis,Computer Science,3
+S029,William,Martinez,Computer Science,4
+S030,John,Davis,Computer Science,2
+S031,Noah,Rodriguez,Computer Science,3
+S032,Charlotte,Wilson,Computer Science,4
+S033,John,Rodriguez,Computer Science,1
+S034,Olivia,Johnson,Computer Science,3
+S035,Emma,Thomas,Computer Science,1
+S036,Emma,Smith,Computer Science,1
+S037,Ava,Wilson,Computer Science,3
+S038,John,Martinez,Computer Science,2
+S039,Ava,Thomas,Computer Science,3
+S040,Mia,Anderson,Computer Science,2
+S041,William,Wilson,Computer Science,1
+S042,Sophia,Johnson,Computer Science,1
+S043,James,Rodriguez,Computer Science,3
+S044,Ava,Brown,Computer Science,3
+S045,Ethan,Smith,Computer Science,4
+S046,William,Martin,Computer Science,4
+S047,Ethan,Thomas,Computer Science,1
+S048,David,Martin,Computer Science,2
+S049,Charlotte,Anderson,Computer Science,1
+S050,Olivia,Hernandez,Computer Science,2
+S051,Ethan,Anderson,Computer Science,2
+S052,James,Martin,Computer Science,3
+S053,Ava,Thomas,Computer Science,1
+S054,John,Lopez,Computer Science,4
+S055,Charlotte,Wilson,Computer Science,1
+S056,Noah,Thomas,Computer Science,4
+S057,Sophia,Brown,Computer Science,1
+S058,David,Lopez,Computer Science,4
+S059,Emma,Garcia,Computer Science,2
+S060,Ethan,Smith,Computer Science,4
+S061,Mia,Thomas,Computer Science,4
+S062,Ethan,Brown,Computer Science,2
+S063,Isabella,Taylor,Computer Science,4
+S064,Olivia,Hernandez,Computer Science,3
+S065,James,Smith,Computer Science,3
+S066,Noah,Lopez,Computer Science,2
+S067,Isabella,Anderson,Computer Science,1
+S068,Noah,Garcia,Computer Science,4
+S069,Michael,Moore,Computer Science,4
+S070,James,Johnson,Computer Science,2
+S071,John,Rodriguez,Computer Science,4
+S072,Charlotte,Hernandez,Computer Science,1
+S073,Noah,Taylor,Computer Science,2
+S074,Mia,Martin,Computer Science,3
+S075,John,Hernandez,Computer Science,1
+S076,Sophia,Lopez,Computer Science,1
+S077,Charlotte,Lopez,Computer Science,3
+S078,Isabella,Wilson,Computer Science,4
+S079,Isabella,Martin,Computer Science,2
+S080,David,Martin,Computer Science,4
+S081,David,Davis,Computer Science,1
+S082,Isabella,Thomas,Computer Science,2
+S083,Ethan,Smith,Computer Science,2
+S084,John,Smith,Computer Science,4
+S085,Liam,Thomas,Computer Science,1
+S086,Emma,Moore,Computer Science,3
+S087,Isabella,Anderson,Computer Science,1
+S088,Mia,Lopez,Computer Science,2
+S089,Liam,Rodriguez,Computer Science,3
+S090,James,Smith,Computer Science,1
+S091,Olivia,Anderson,Computer Science,4
+S092,James,Wilson,Computer Science,2
+S093,Liam,Taylor,Computer Science,1
+S094,Emma,Moore,Computer Science,2
+S095,David,Brown,Computer Science,2
+S096,Ethan,Thomas,Computer Science,4
+S097,Ava,Smith,Computer Science,3
+S098,Isabella,Davis,Computer Science,2
+S099,David,Johnson,Computer Science,4
+S100,Noah,Davis,Computer Science,2
+S101,Charlotte,Anderson,Mathematics,1
+S102,Emma,Thomas,Mathematics,4
+S103,Noah,Rodriguez,Mathematics,4
+S104,David,Lopez,Mathematics,4
+S105,Liam,Martinez,Mathematics,2
+S106,Noah,Taylor,Mathematics,4
+S107,Charlotte,Martinez,Mathematics,4
+S108,Mia,Wilson,Mathematics,3
+S109,David,Smith,Mathematics,1
+S110,Michael,Moore,Mathematics,4
+S111,Ethan,Lopez,Mathematics,2
+S112,Isabella,Brown,Mathematics,3
+S113,Mia,Rodriguez,Mathematics,2
+S114,Liam,Taylor,Mathematics,4
+S115,Mia,Smith,Mathematics,2
+S116,David,Martin,Mathematics,3
+S117,Mia,Brown,Mathematics,1
+S118,Mia,Hernandez,Mathematics,1
+S119,William,Lopez,Mathematics,2
+S120,Mia,Lopez,Mathematics,4
+S121,Emma,Johnson,Mathematics,1
+S122,Ava,Lopez,Mathematics,2
+S123,Noah,Martin,Mathematics,1
+S124,James,Garcia,Mathematics,1
+S125,Liam,Davis,Mathematics,2
+S126,Michael,Brown,Mathematics,1
+S127,David,Davis,Mathematics,1
+S128,Michael,Garcia,Mathematics,3
+S129,Liam,Anderson,Mathematics,1
+S130,Noah,Anderson,Mathematics,2
+S131,William,Thomas,Mathematics,1
+S132,Isabella,Lopez,Mathematics,4
+S133,Liam,Wilson,Mathematics,1
+S134,Liam,Rodriguez,Mathematics,2
+S135,David,Wilson,Mathematics,1
+S136,Michael,Lopez,Mathematics,1
+S137,Ava,Wilson,Mathematics,1
+S138,Noah,Wilson,Mathematics,2
+S139,John,Martinez,Mathematics,4
+S140,Sophia,Rodriguez,Mathematics,4
+S141,Olivia,Wilson,Mathematics,3
+S142,Sophia,Garcia,Mathematics,1
+S143,Mia,Davis,Mathematics,2
+S144,Sophia,Davis,Mathematics,1
+S145,Noah,Brown,Mathematics,4
+S146,David,Smith,Mathematics,4
+S147,Michael,Thomas,Mathematics,4
+S148,Noah,Moore,Mathematics,1
+S149,Emma,Rodriguez,Mathematics,2
+S150,Isabella,Rodriguez,Mathematics,1
+S151,Isabella,Johnson,Mathematics,2
+S152,David,Martin,Mathematics,1
+S153,Ethan,Taylor,Mathematics,4
+S154,David,Taylor,Mathematics,4
+S155,William,Davis,Mathematics,2
+S156,Mia,Martinez,Mathematics,3
+S157,Michael,Taylor,Mathematics,1
+S158,James,Johnson,Mathematics,3
+S159,John,Moore,Mathematics,4
+S160,Mia,Davis,Mathematics,2
+S161,Olivia,Anderson,Mathematics,4
+S162,Ava,Lopez,Mathematics,4
+S163,Michael,Moore,Mathematics,4
+S164,Michael,Lopez,Mathematics,4
+S165,Isabella,Wilson,Mathematics,1
+S166,Michael,Moore,Mathematics,1
+S167,Emma,Rodriguez,Mathematics,2
+S168,Ethan,Hernandez,Mathematics,1
+S169,William,Hernandez,Mathematics,4
+S170,Michael,Smith,Mathematics,1
+S171,Emma,Martinez,Mathematics,2
+S172,Michael,Lopez,Mathematics,4
+S173,Ava,Wilson,Mathematics,3
+S174,Noah,Davis,Mathematics,1
+S175,Ethan,Moore,Mathematics,4
+S176,Mia,Davis,Mathematics,2
+S177,James,Thomas,Mathematics,2
+S178,Mia,Wilson,Mathematics,4
+S179,David,Thomas,Mathematics,2
+S180,David,Taylor,Mathematics,1
+S181,Charlotte,Taylor,Mathematics,4
+S182,Charlotte,Taylor,Mathematics,4
+S183,James,Davis,Mathematics,2
+S184,John,Martin,Mathematics,3
+S185,Mia,Garcia,Mathematics,1
+S186,William,Brown,Mathematics,1
+S187,William,Moore,Mathematics,4
+S188,Mia,Martin,Mathematics,3
+S189,Charlotte,Davis,Mathematics,4
+S190,Michael,Wilson,Mathematics,1
+S191,David,Smith,Mathematics,4
+S192,Sophia,Rodriguez,Mathematics,3
+S193,John,Rodriguez,Mathematics,2
+S194,Olivia,Brown,Mathematics,2
+S195,Charlotte,Lopez,Mathematics,1
+S196,Liam,Taylor,Mathematics,3
+S197,Isabella,Smith,Mathematics,3
+S198,Ava,Rodriguez,Mathematics,1
+S199,Mia,Lopez,Mathematics,2
+S200,Emma,Martin,Mathematics,3
+S201,Noah,Lopez,Physics,1
+S202,Olivia,Thomas,Physics,3
+S203,Liam,Garcia,Physics,2
+S204,William,Rodriguez,Physics,3
+S205,John,Taylor,Physics,2
+S206,Charlotte,Martinez,Physics,3
+S207,James,Martin,Physics,1
+S208,Olivia,Taylor,Physics,4
+S209,Mia,Lopez,Physics,4
+S210,Ethan,Lopez,Physics,3
+S211,Emma,Rodriguez,Physics,2
+S212,Ava,Martin,Physics,4
+S213,William,Garcia,Physics,2
+S214,Ethan,Brown,Physics,3
+S215,Ethan,Lopez,Physics,3
+S216,Noah,Wilson,Physics,3
+S217,Olivia,Lopez,Physics,1
+S218,Mia,Hernandez,Physics,1
+S219,Mia,Thomas,Physics,3
+S220,Emma,Taylor,Physics,2
+S221,Mia,Garcia,Physics,2
+S222,John,Wilson,Physics,4
+S223,William,Hernandez,Physics,4
+S224,Isabella,Hernandez,Physics,4
+S225,Michael,Brown,Physics,1
+S226,William,Lopez,Physics,1
+S227,Emma,Martin,Physics,4
+S228,Olivia,Lopez,Physics,3
+S229,Michael,Smith,Physics,4
+S230,Michael,Davis,Physics,4
+S231,John,Taylor,Physics,2
+S232,Olivia,Hernandez,Physics,4
+S233,Liam,Martin,Physics,1
+S234,Emma,Garcia,Physics,2
+S235,John,Wilson,Physics,4
+S236,Isabella,Rodriguez,Physics,4
+S237,James,Brown,Physics,1
+S238,Olivia,Davis,Physics,4
+S239,Ethan,Martinez,Physics,2
+S240,Isabella,Davis,Physics,4
+S241,Noah,Taylor,Physics,3
+S242,William,Rodriguez,Physics,1
+S243,James,Moore,Physics,2
+S244,James,Smith,Physics,4
+S245,Liam,Moore,Physics,3
+S246,James,Brown,Physics,4
+S247,David,Garcia,Physics,3
+S248,Isabella,Lopez,Physics,1
+S249,David,Anderson,Physics,4
+S250,Mia,Hernandez,Physics,1
+S251,Olivia,Smith,Physics,2
+S252,Olivia,Taylor,Physics,1
+S253,Charlotte,Thomas,Physics,4
+S254,Ethan,Smith,Physics,4
+S255,James,Brown,Physics,4
+S256,Olivia,Thomas,Physics,2
+S257,Noah,Lopez,Physics,3
+S258,Ethan,Rodriguez,Physics,2
+S259,Michael,Hernandez,Physics,1
+S260,Ethan,Brown,Physics,1
+S261,William,Anderson,Physics,3
+S262,Sophia,Wilson,Physics,4
+S263,Ava,Brown,Physics,3
+S264,Michael,Johnson,Physics,2
+S265,Michael,Lopez,Physics,1
+S266,David,Garcia,Physics,3
+S267,Ethan,Martinez,Physics,4
+S268,Isabella,Smith,Physics,3
+S269,Emma,Moore,Physics,1
+S270,Olivia,Thomas,Physics,2
+S271,Isabella,Lopez,Physics,4
+S272,Michael,Taylor,Physics,4
+S273,Charlotte,Hernandez,Physics,2
+S274,Liam,Thomas,Physics,2
+S275,Emma,Hernandez,Physics,2
+S276,David,Wilson,Physics,3
+S277,David,Davis,Physics,1
+S278,Olivia,Brown,Physics,4
+S279,John,Martin,Physics,4
+S280,James,Thomas,Physics,1
+S281,Olivia,Johnson,Physics,4
+S282,Michael,Taylor,Physics,1
+S283,Charlotte,Smith,Physics,4
+S284,Olivia,Brown,Physics,4
+S285,William,Martin,Physics,2
+S286,Ava,Moore,Physics,1
+S287,James,Martin,Physics,4
+S288,William,Martinez,Physics,4
+S289,Noah,Anderson,Physics,1
+S290,Ethan,Brown,Physics,3
+S291,Emma,Hernandez,Physics,1
+S292,William,Davis,Physics,2
+S293,Noah,Anderson,Physics,2
+S294,Emma,Wilson,Physics,1
+S295,Emma,Davis,Physics,2
+S296,Liam,Martin,Physics,2
+S297,Noah,Martin,Physics,3
+S298,Noah,Taylor,Physics,2
+S299,Liam,Moore,Physics,4
+S300,James,Thomas,Physics,4
+S301,Ethan,Moore,Biology,2
+S302,Isabella,Moore,Biology,1
+S303,Ava,Moore,Biology,4
+S304,Liam,Martin,Biology,1
+S305,Sophia,Smith,Biology,4
+S306,Michael,Brown,Biology,3
+S307,Mia,Smith,Biology,3
+S308,Liam,Wilson,Biology,1
+S309,Ethan,Thomas,Biology,1
+S310,Charlotte,Lopez,Biology,3
+S311,William,Martin,Biology,1
+S312,Isabella,Martin,Biology,2
+S313,Michael,Moore,Biology,4
+S314,Michael,Martin,Biology,1
+S315,Olivia,Anderson,Biology,3
+S316,John,Johnson,Biology,3
+S317,David,Brown,Biology,3
+S318,Liam,Hernandez,Biology,4
+S319,John,Martinez,Biology,2
+S320,Ethan,Anderson,Biology,2
+S321,Michael,Brown,Biology,3
+S322,John,Hernandez,Biology,3
+S323,Liam,Smith,Biology,3
+S324,Noah,Martin,Biology,4
+S325,James,Taylor,Biology,2
+S326,Ethan,Hernandez,Biology,1
+S327,Charlotte,Wilson,Biology,1
+S328,John,Davis,Biology,4
+S329,Emma,Lopez,Biology,1
+S330,James,Davis,Biology,3
+S331,David,Davis,Biology,2
+S332,Sophia,Martinez,Biology,3
+S333,Isabella,Hernandez,Biology,1
+S334,Ethan,Johnson,Biology,2
+S335,Michael,Brown,Biology,3
+S336,Ava,Johnson,Biology,4
+S337,Olivia,Moore,Biology,1
+S338,David,Johnson,Biology,2
+S339,William,Garcia,Biology,1
+S340,Mia,Johnson,Biology,1
+S341,Charlotte,Martin,Biology,2
+S342,Charlotte,Brown,Biology,3
+S343,John,Moore,Biology,2
+S344,Isabella,Martinez,Biology,4
+S345,Isabella,Anderson,Biology,1
+S346,John,Martin,Biology,1
+S347,James,Hernandez,Biology,1
+S348,Ava,Johnson,Biology,4
+S349,Liam,Hernandez,Biology,3
+S350,Sophia,Smith,Biology,2
+S351,John,Garcia,Biology,1
+S352,William,Johnson,Biology,3
+S353,Sophia,Taylor,Biology,4
+S354,Charlotte,Thomas,Biology,4
+S355,Ethan,Johnson,Biology,1
+S356,David,Garcia,Biology,3
+S357,Emma,Taylor,Biology,3
+S358,Liam,Smith,Biology,2
+S359,William,Lopez,Biology,1
+S360,David,Smith,Biology,1
+S361,Mia,Davis,Biology,3
+S362,Noah,Martinez,Biology,4
+S363,Noah,Davis,Biology,3
+S364,William,Johnson,Biology,3
+S365,Emma,Lopez,Biology,3
+S366,William,Moore,Biology,3
+S367,Isabella,Johnson,Biology,1
+S368,Emma,Johnson,Biology,2
+S369,Mia,Lopez,Biology,3
+S370,John,Thomas,Biology,2
+S371,James,Martin,Biology,2
+S372,William,Lopez,Biology,1
+S373,Sophia,Moore,Biology,2
+S374,Mia,Wilson,Biology,2
+S375,Liam,Brown,Biology,1
+S376,John,Martin,Biology,4
+S377,Emma,Garcia,Biology,1
+S378,Mia,Garcia,Biology,2
+S379,Mia,Johnson,Biology,3
+S380,William,Moore,Biology,1
+S381,Isabella,Lopez,Biology,3
+S382,Sophia,Wilson,Biology,2
+S383,Noah,Martin,Biology,1
+S384,Olivia,Brown,Biology,3
+S385,Michael,Hernandez,Biology,2
+S386,Liam,Taylor,Biology,3
+S387,Isabella,Johnson,Biology,1
+S388,James,Martinez,Biology,4
+S389,Isabella,Garcia,Biology,4
+S390,Mia,Hernandez,Biology,1
+S391,Emma,Smith,Biology,2
+S392,James,Taylor,Biology,2
+S393,Olivia,Smith,Biology,1
+S394,William,Martinez,Biology,3
+S395,Noah,Rodriguez,Biology,1
+S396,Mia,Brown,Biology,3
+S397,Isabella,Garcia,Biology,3
+S398,Olivia,Martinez,Biology,4
+S399,Ava,Smith,Biology,2
+S400,Olivia,Moore,Biology,1
+S401,Sophia,Smith,Chemistry,3
+S402,Charlotte,Moore,Chemistry,4
+S403,John,Johnson,Chemistry,1
+S404,Emma,Garcia,Chemistry,1
+S405,Sophia,Anderson,Chemistry,3
+S406,Ethan,Martinez,Chemistry,1
+S407,Charlotte,Taylor,Chemistry,1
+S408,William,Anderson,Chemistry,2
+S409,Mia,Wilson,Chemistry,4
+S410,Ethan,Anderson,Chemistry,2
+S411,Ethan,Garcia,Chemistry,1
+S412,Olivia,Johnson,Chemistry,4
+S413,Isabella,Smith,Chemistry,2
+S414,William,Moore,Chemistry,2
+S415,Isabella,Rodriguez,Chemistry,2
+S416,Emma,Johnson,Chemistry,1
+S417,Ava,Smith,Chemistry,4
+S418,John,Johnson,Chemistry,1
+S419,Liam,Davis,Chemistry,4
+S420,James,Taylor,Chemistry,1
+S421,Mia,Davis,Chemistry,3
+S422,Emma,Hernandez,Chemistry,3
+S423,Noah,Smith,Chemistry,1
+S424,Mia,Hernandez,Chemistry,2
+S425,William,Lopez,Chemistry,1
+S426,Charlotte,Taylor,Chemistry,1
+S427,John,Johnson,Chemistry,4
+S428,John,Anderson,Chemistry,2
+S429,Charlotte,Martin,Chemistry,3
+S430,Emma,Davis,Chemistry,4
+S431,Isabella,Anderson,Chemistry,1
+S432,Olivia,Garcia,Chemistry,1
+S433,William,Moore,Chemistry,3
+S434,James,Anderson,Chemistry,3
+S435,Sophia,Brown,Chemistry,4
+S436,Noah,Wilson,Chemistry,3
+S437,William,Anderson,Chemistry,4
+S438,Mia,Rodriguez,Chemistry,2
+S439,Liam,Smith,Chemistry,4
+S440,Mia,Smith,Chemistry,3
+S441,Liam,Martinez,Chemistry,4
+S442,David,Johnson,Chemistry,2
+S443,Emma,Lopez,Chemistry,2
+S444,David,Moore,Chemistry,4
+S445,Mia,Lopez,Chemistry,1
+S446,William,Rodriguez,Chemistry,2
+S447,John,Lopez,Chemistry,3
+S448,Emma,Garcia,Chemistry,3
+S449,Michael,Rodriguez,Chemistry,3
+S450,Ava,Taylor,Chemistry,2
+S451,Sophia,Thomas,Chemistry,4
+S452,Ava,Moore,Chemistry,2
+S453,Michael,Hernandez,Chemistry,4
+S454,Mia,Anderson,Chemistry,4
+S455,Ethan,Garcia,Chemistry,1
+S456,David,Thomas,Chemistry,1
+S457,Sophia,Garcia,Chemistry,4
+S458,William,Wilson,Chemistry,1
+S459,Isabella,Martinez,Chemistry,3
+S460,Sophia,Martin,Chemistry,2
+S461,Isabella,Thomas,Chemistry,3
+S462,Liam,Thomas,Chemistry,4
+S463,Emma,Garcia,Chemistry,3
+S464,Ava,Martin,Chemistry,4
+S465,Ethan,Wilson,Chemistry,1
+S466,Olivia,Thomas,Chemistry,3
+S467,Charlotte,Anderson,Chemistry,3
+S468,Isabella,Martinez,Chemistry,3
+S469,David,Martin,Chemistry,1
+S470,Mia,Hernandez,Chemistry,2
+S471,David,Davis,Chemistry,3
+S472,Emma,Anderson,Chemistry,1
+S473,Emma,Hernandez,Chemistry,3
+S474,Ava,Rodriguez,Chemistry,4
+S475,Emma,Thomas,Chemistry,3
+S476,Charlotte,Wilson,Chemistry,1
+S477,Charlotte,Hernandez,Chemistry,2
+S478,Noah,Garcia,Chemistry,4
+S479,David,Hernandez,Chemistry,2
+S480,James,Smith,Chemistry,2
+S481,John,Martinez,Chemistry,1
+S482,David,Davis,Chemistry,3
+S483,Noah,Hernandez,Chemistry,4
+S484,Charlotte,Lopez,Chemistry,3
+S485,Liam,Martin,Chemistry,1
+S486,William,Brown,Chemistry,2
+S487,Emma,Brown,Chemistry,2
+S488,John,Brown,Chemistry,2
+S489,John,Martinez,Chemistry,1
+S490,David,Smith,Chemistry,3
+S491,Michael,Taylor,Chemistry,2
+S492,Isabella,Hernandez,Chemistry,4
+S493,Emma,Wilson,Chemistry,4
+S494,David,Hernandez,Chemistry,1
+S495,Ethan,Martinez,Chemistry,2
+S496,Ethan,Wilson,Chemistry,4
+S497,Isabella,Anderson,Chemistry,1
+S498,Ava,Wilson,Chemistry,4
+S499,James,Moore,Chemistry,3
+S500,Emma,Johnson,Chemistry,2

@@ -1,0 +1,12 @@
+# Timeslots Data,,,
+timeslot_id,day,time_start,time_end
+T001,Thursday,13:00,15:00
+T002,Wednesday,8:00,10:00
+T003,Monday,15:30,17:30
+T004,Friday,8:00,10:00
+T005,Monday,10:30,12:30
+T006,Monday,8:00,10:00
+T007,Monday,13:00,15:00
+T008,Wednesday,13:00,15:00
+T009,Thursday,8:00,10:00
+T010,Friday,13:00,15:00

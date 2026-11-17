@@ -1,3 +1,11 @@
-dataset,method,status,exams,timeslots,rooms,scheduled,timeslots_used,wasted_seats,runtime_ms
-d1,GREEDY,GREEDY_COMPLETE,22,100,30,22,5,23,0.21
-d1,CP-SAT,FEASIBLE,22,100,30,22,5,124,62228.37
+dataset,method,status,exams,timeslots,rooms,scheduled,unscheduled,timeslots_used,lower_bound,gap_pct,hard_violations,wasted_seats,room_utilization_pct,back_to_back,same_day_exams,runtime_ms
+d1,GREEDY,GREEDY_COMPLETE,22,100,30,22,0,5,5,0.00,0,23,97.02,,,0.20
+d1,CP-SAT,OPTIMAL,22,100,30,22,0,5,5,0.00,0,99,88.34,,,9316.80
+d2,GREEDY,GREEDY_PARTIAL,51,11,30,47,4,11,14,-21.43,0,319,78.65,,,0.52
+d2,CP-SAT,INFEASIBLE,51,11,30,0,51,0,14,0.00,0,0,0.00,,,0.07
+d3,GREEDY,GREEDY_COMPLETE,144,30,30,144,0,7,6,16.67,0,6800,34.62,,,7.92
+d3,CP-SAT,OPTIMAL,144,30,30,144,0,6,6,0.00,0,7650,32.00,,,15326.76
+d4,GREEDY,GREEDY_COMPLETE,144,30,30,144,0,7,6,16.67,0,6800,34.62,,,3.21
+d4,CP-SAT,OPTIMAL,144,30,30,144,0,6,6,0.00,0,7650,32.00,,,15291.00
+d5,GREEDY,GREEDY_COMPLETE,144,30,30,144,0,7,6,16.67,0,6800,34.62,,,4.99
+d5,CP-SAT,OPTIMAL,144,30,30,144,0,6,6,0.00,0,7650,32.00,,,14519.70
