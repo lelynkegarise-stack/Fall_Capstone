@@ -1,0 +1,701 @@
+student_id,major
+STU_0001,Nursing
+STU_0002,English
+STU_0003,Political Science
+STU_0004,History
+STU_0005,Political Science
+STU_0006,Political Science
+STU_0007,Arts
+STU_0008,Psychology
+STU_0009,Computer Science
+STU_0010,Economics
+STU_0011,Chemistry
+STU_0012,Arts
+STU_0013,Computer Science
+STU_0014,Biology
+STU_0015,Mathematics
+STU_0016,History
+STU_0017,Economics
+STU_0018,Chemistry
+STU_0019,Business
+STU_0020,Psychology
+STU_0021,Mathematics
+STU_0022,Nursing
+STU_0023,Chemistry
+STU_0024,Computer Science
+STU_0025,Political Science
+STU_0026,Chemistry
+STU_0027,Business
+STU_0028,English
+STU_0029,Biology
+STU_0030,Business
+STU_0031,Biology
+STU_0032,Mathematics
+STU_0033,Biology
+STU_0034,Nursing
+STU_0035,Nursing
+STU_0036,Economics
+STU_0037,Biology
+STU_0038,Biology
+STU_0039,Computer Science
+STU_0040,Computer Science
+STU_0041,Chemistry
+STU_0042,Chemistry
+STU_0043,Biology
+STU_0044,Biology
+STU_0045,English
+STU_0046,History
+STU_0047,Chemistry
+STU_0048,Psychology
+STU_0049,Arts
+STU_0050,Arts
+STU_0051,Chemistry
+STU_0052,Biology
+STU_0053,Political Science
+STU_0054,Chemistry
+STU_0055,Business
+STU_0056,English
+STU_0057,Computer Science
+STU_0058,History
+STU_0059,Business
+STU_0060,Biology
+STU_0061,Biology
+STU_0062,English
+STU_0063,Mathematics
+STU_0064,History
+STU_0065,English
+STU_0066,Nursing
+STU_0067,Nursing
+STU_0068,Computer Science
+STU_0069,Nursing
+STU_0070,Arts
+STU_0071,Political Science
+STU_0072,History
+STU_0073,Mathematics
+STU_0074,English
+STU_0075,History
+STU_0076,English
+STU_0077,Economics
+STU_0078,Political Science
+STU_0079,History
+STU_0080,Biology
+STU_0081,Economics
+STU_0082,Economics
+STU_0083,Political Science
+STU_0084,Biology
+STU_0085,Computer Science
+STU_0086,English
+STU_0087,Computer Science
+STU_0088,Political Science
+STU_0089,History
+STU_0090,Business
+STU_0091,Computer Science
+STU_0092,Psychology
+STU_0093,Business
+STU_0094,History
+STU_0095,Business
+STU_0096,Nursing
+STU_0097,Computer Science
+STU_0098,Economics
+STU_0099,Computer Science
+STU_0100,Political Science
+STU_0101,Biology
+STU_0102,Nursing
+STU_0103,Chemistry
+STU_0104,Mathematics
+STU_0105,Chemistry
+STU_0106,Economics
+STU_0107,History
+STU_0108,Psychology
+STU_0109,History
+STU_0110,Psychology
+STU_0111,English
+STU_0112,Economics
+STU_0113,Mathematics
+STU_0114,Nursing
+STU_0115,Political Science
+STU_0116,History
+STU_0117,English
+STU_0118,Computer Science
+STU_0119,Business
+STU_0120,Mathematics
+STU_0121,Chemistry
+STU_0122,History
+STU_0123,Psychology
+STU_0124,Nursing
+STU_0125,History
+STU_0126,Biology
+STU_0127,History
+STU_0128,English
+STU_0129,Political Science
+STU_0130,Psychology
+STU_0131,Mathematics
+STU_0132,English
+STU_0133,Arts
+STU_0134,History
+STU_0135,English
+STU_0136,Biology
+STU_0137,Mathematics
+STU_0138,Arts
+STU_0139,Biology
+STU_0140,Political Science
+STU_0141,Political Science
+STU_0142,English
+STU_0143,Economics
+STU_0144,Biology
+STU_0145,Political Science
+STU_0146,Computer Science
+STU_0147,Mathematics
+STU_0148,Nursing
+STU_0149,Psychology
+STU_0150,Business
+STU_0151,Computer Science
+STU_0152,Chemistry
+STU_0153,Political Science
+STU_0154,Nursing
+STU_0155,History
+STU_0156,English
+STU_0157,Economics
+STU_0158,Arts
+STU_0159,Business
+STU_0160,Biology
+STU_0161,Computer Science
+STU_0162,Arts
+STU_0163,Computer Science
+STU_0164,Economics
+STU_0165,History
+STU_0166,Chemistry
+STU_0167,Biology
+STU_0168,Political Science
+STU_0169,Nursing
+STU_0170,Biology
+STU_0171,Arts
+STU_0172,Business
+STU_0173,Mathematics
+STU_0174,Biology
+STU_0175,Business
+STU_0176,History
+STU_0177,Biology
+STU_0178,Computer Science
+STU_0179,Business
+STU_0180,English
+STU_0181,Biology
+STU_0182,Economics
+STU_0183,Nursing
+STU_0184,Biology
+STU_0185,Psychology
+STU_0186,Economics
+STU_0187,Economics
+STU_0188,Political Science
+STU_0189,Political Science
+STU_0190,History
+STU_0191,Economics
+STU_0192,English
+STU_0193,English
+STU_0194,Economics
+STU_0195,Business
+STU_0196,Biology
+STU_0197,Mathematics
+STU_0198,Business
+STU_0199,Psychology
+STU_0200,Biology
+STU_0201,Arts
+STU_0202,Economics
+STU_0203,History
+STU_0204,Biology
+STU_0205,Mathematics
+STU_0206,Economics
+STU_0207,English
+STU_0208,Psychology
+STU_0209,Psychology
+STU_0210,Psychology
+STU_0211,History
+STU_0212,Mathematics
+STU_0213,History
+STU_0214,Political Science
+STU_0215,Nursing
+STU_0216,Arts
+STU_0217,Computer Science
+STU_0218,English
+STU_0219,History
+STU_0220,Psychology
+STU_0221,Political Science
+STU_0222,Arts
+STU_0223,English
+STU_0224,Economics
+STU_0225,English
+STU_0226,Political Science
+STU_0227,Political Science
+STU_0228,English
+STU_0229,History
+STU_0230,Arts
+STU_0231,Biology
+STU_0232,Nursing
+STU_0233,Computer Science
+STU_0234,Economics
+STU_0235,Psychology
+STU_0236,English
+STU_0237,History
+STU_0238,Arts
+STU_0239,English
+STU_0240,Economics
+STU_0241,English
+STU_0242,Psychology
+STU_0243,Arts
+STU_0244,Arts
+STU_0245,History
+STU_0246,History
+STU_0247,English
+STU_0248,Arts
+STU_0249,History
+STU_0250,Political Science
+STU_0251,Business
+STU_0252,History
+STU_0253,Biology
+STU_0254,Political Science
+STU_0255,Economics
+STU_0256,History
+STU_0257,History
+STU_0258,Psychology
+STU_0259,Biology
+STU_0260,Psychology
+STU_0261,Biology
+STU_0262,Chemistry
+STU_0263,History
+STU_0264,Economics
+STU_0265,English
+STU_0266,Political Science
+STU_0267,Mathematics
+STU_0268,Political Science
+STU_0269,Arts
+STU_0270,Political Science
+STU_0271,Business
+STU_0272,Biology
+STU_0273,Nursing
+STU_0274,Nursing
+STU_0275,Psychology
+STU_0276,Arts
+STU_0277,Business
+STU_0278,English
+STU_0279,Nursing
+STU_0280,Psychology
+STU_0281,Arts
+STU_0282,English
+STU_0283,Political Science
+STU_0284,Computer Science
+STU_0285,Chemistry
+STU_0286,Biology
+STU_0287,Nursing
+STU_0288,Economics
+STU_0289,Nursing
+STU_0290,Arts
+STU_0291,Biology
+STU_0292,Chemistry
+STU_0293,Arts
+STU_0294,Biology
+STU_0295,Arts
+STU_0296,Political Science
+STU_0297,Computer Science
+STU_0298,Economics
+STU_0299,Chemistry
+STU_0300,Biology
+STU_0301,Computer Science
+STU_0302,Biology
+STU_0303,Mathematics
+STU_0304,History
+STU_0305,Biology
+STU_0306,Economics
+STU_0307,Chemistry
+STU_0308,Psychology
+STU_0309,Computer Science
+STU_0310,Business
+STU_0311,Economics
+STU_0312,History
+STU_0313,Business
+STU_0314,Arts
+STU_0315,Nursing
+STU_0316,Mathematics
+STU_0317,Nursing
+STU_0318,Chemistry
+STU_0319,Chemistry
+STU_0320,Political Science
+STU_0321,History
+STU_0322,Computer Science
+STU_0323,History
+STU_0324,Business
+STU_0325,English
+STU_0326,Business
+STU_0327,Mathematics
+STU_0328,Political Science
+STU_0329,Psychology
+STU_0330,History
+STU_0331,Computer Science
+STU_0332,Psychology
+STU_0333,Nursing
+STU_0334,English
+STU_0335,Mathematics
+STU_0336,English
+STU_0337,Psychology
+STU_0338,Psychology
+STU_0339,History
+STU_0340,Nursing
+STU_0341,English
+STU_0342,History
+STU_0343,Biology
+STU_0344,Business
+STU_0345,Business
+STU_0346,Nursing
+STU_0347,Arts
+STU_0348,Psychology
+STU_0349,History
+STU_0350,Economics
+STU_0351,Biology
+STU_0352,Biology
+STU_0353,Nursing
+STU_0354,Business
+STU_0355,Nursing
+STU_0356,Economics
+STU_0357,Chemistry
+STU_0358,Biology
+STU_0359,Nursing
+STU_0360,Mathematics
+STU_0361,History
+STU_0362,Arts
+STU_0363,Computer Science
+STU_0364,Business
+STU_0365,Mathematics
+STU_0366,History
+STU_0367,Nursing
+STU_0368,Nursing
+STU_0369,Psychology
+STU_0370,Biology
+STU_0371,History
+STU_0372,Arts
+STU_0373,Nursing
+STU_0374,Business
+STU_0375,Business
+STU_0376,Business
+STU_0377,Chemistry
+STU_0378,Economics
+STU_0379,English
+STU_0380,Economics
+STU_0381,Political Science
+STU_0382,Business
+STU_0383,Business
+STU_0384,Biology
+STU_0385,Nursing
+STU_0386,Nursing
+STU_0387,English
+STU_0388,Political Science
+STU_0389,English
+STU_0390,Economics
+STU_0391,English
+STU_0392,Business
+STU_0393,Computer Science
+STU_0394,History
+STU_0395,English
+STU_0396,Economics
+STU_0397,English
+STU_0398,Biology
+STU_0399,Economics
+STU_0400,Computer Science
+STU_0401,Mathematics
+STU_0402,Arts
+STU_0403,Nursing
+STU_0404,Economics
+STU_0405,Chemistry
+STU_0406,English
+STU_0407,Computer Science
+STU_0408,Biology
+STU_0409,Business
+STU_0410,Computer Science
+STU_0411,Economics
+STU_0412,Psychology
+STU_0413,Psychology
+STU_0414,English
+STU_0415,Chemistry
+STU_0416,Economics
+STU_0417,Computer Science
+STU_0418,Chemistry
+STU_0419,Economics
+STU_0420,English
+STU_0421,Biology
+STU_0422,Political Science
+STU_0423,English
+STU_0424,English
+STU_0425,Economics
+STU_0426,Nursing
+STU_0427,Economics
+STU_0428,Psychology
+STU_0429,Arts
+STU_0430,Nursing
+STU_0431,Political Science
+STU_0432,Mathematics
+STU_0433,Computer Science
+STU_0434,Biology
+STU_0435,English
+STU_0436,English
+STU_0437,Psychology
+STU_0438,Political Science
+STU_0439,History
+STU_0440,Nursing
+STU_0441,English
+STU_0442,Political Science
+STU_0443,Psychology
+STU_0444,Computer Science
+STU_0445,Economics
+STU_0446,History
+STU_0447,History
+STU_0448,Arts
+STU_0449,Political Science
+STU_0450,Nursing
+STU_0451,Biology
+STU_0452,Computer Science
+STU_0453,Computer Science
+STU_0454,English
+STU_0455,Psychology
+STU_0456,Economics
+STU_0457,Arts
+STU_0458,Mathematics
+STU_0459,Arts
+STU_0460,Psychology
+STU_0461,Chemistry
+STU_0462,Computer Science
+STU_0463,Business
+STU_0464,Business
+STU_0465,Nursing
+STU_0466,Nursing
+STU_0467,Political Science
+STU_0468,Political Science
+STU_0469,Arts
+STU_0470,Arts
+STU_0471,Economics
+STU_0472,Business
+STU_0473,Economics
+STU_0474,Business
+STU_0475,Arts
+STU_0476,Political Science
+STU_0477,Chemistry
+STU_0478,English
+STU_0479,Economics
+STU_0480,Mathematics
+STU_0481,English
+STU_0482,Computer Science
+STU_0483,Political Science
+STU_0484,Business
+STU_0485,Nursing
+STU_0486,English
+STU_0487,Arts
+STU_0488,Economics
+STU_0489,English
+STU_0490,Biology
+STU_0491,Biology
+STU_0492,Economics
+STU_0493,Political Science
+STU_0494,Psychology
+STU_0495,Economics
+STU_0496,History
+STU_0497,Psychology
+STU_0498,Biology
+STU_0499,Business
+STU_0500,Nursing
+STU_0501,Psychology
+STU_0502,Computer Science
+STU_0503,Mathematics
+STU_0504,Political Science
+STU_0505,Chemistry
+STU_0506,English
+STU_0507,Mathematics
+STU_0508,Mathematics
+STU_0509,Arts
+STU_0510,Computer Science
+STU_0511,History
+STU_0512,Political Science
+STU_0513,Business
+STU_0514,Mathematics
+STU_0515,Business
+STU_0516,Political Science
+STU_0517,Economics
+STU_0518,Computer Science
+STU_0519,Mathematics
+STU_0520,Mathematics
+STU_0521,Chemistry
+STU_0522,Nursing
+STU_0523,Arts
+STU_0524,Mathematics
+STU_0525,Political Science
+STU_0526,Biology
+STU_0527,English
+STU_0528,Political Science
+STU_0529,Economics
+STU_0530,Biology
+STU_0531,Biology
+STU_0532,Nursing
+STU_0533,Biology
+STU_0534,Business
+STU_0535,Biology
+STU_0536,Mathematics
+STU_0537,Nursing
+STU_0538,Chemistry
+STU_0539,Computer Science
+STU_0540,Psychology
+STU_0541,Mathematics
+STU_0542,Arts
+STU_0543,Business
+STU_0544,Political Science
+STU_0545,Mathematics
+STU_0546,English
+STU_0547,Computer Science
+STU_0548,Nursing
+STU_0549,Nursing
+STU_0550,Mathematics
+STU_0551,Political Science
+STU_0552,Business
+STU_0553,Nursing
+STU_0554,Biology
+STU_0555,Computer Science
+STU_0556,Business
+STU_0557,Mathematics
+STU_0558,History
+STU_0559,Arts
+STU_0560,Nursing
+STU_0561,Economics
+STU_0562,Economics
+STU_0563,History
+STU_0564,Arts
+STU_0565,History
+STU_0566,Computer Science
+STU_0567,Biology
+STU_0568,Political Science
+STU_0569,English
+STU_0570,Biology
+STU_0571,Nursing
+STU_0572,Arts
+STU_0573,Arts
+STU_0574,Psychology
+STU_0575,English
+STU_0576,Psychology
+STU_0577,Psychology
+STU_0578,Nursing
+STU_0579,Chemistry
+STU_0580,English
+STU_0581,Mathematics
+STU_0582,Psychology
+STU_0583,Chemistry
+STU_0584,English
+STU_0585,English
+STU_0586,Psychology
+STU_0587,Biology
+STU_0588,Chemistry
+STU_0589,History
+STU_0590,Economics
+STU_0591,Political Science
+STU_0592,Business
+STU_0593,Biology
+STU_0594,Biology
+STU_0595,Political Science
+STU_0596,Computer Science
+STU_0597,Arts
+STU_0598,History
+STU_0599,Mathematics
+STU_0600,Nursing
+STU_0601,Arts
+STU_0602,Computer Science
+STU_0603,Mathematics
+STU_0604,Mathematics
+STU_0605,Psychology
+STU_0606,Nursing
+STU_0607,Economics
+STU_0608,Chemistry
+STU_0609,Business
+STU_0610,Economics
+STU_0611,Economics
+STU_0612,History
+STU_0613,Mathematics
+STU_0614,Psychology
+STU_0615,Computer Science
+STU_0616,Psychology
+STU_0617,Political Science
+STU_0618,Business
+STU_0619,Computer Science
+STU_0620,Biology
+STU_0621,Business
+STU_0622,Arts
+STU_0623,Chemistry
+STU_0624,Political Science
+STU_0625,Mathematics
+STU_0626,Mathematics
+STU_0627,Arts
+STU_0628,Economics
+STU_0629,Chemistry
+STU_0630,Biology
+STU_0631,Political Science
+STU_0632,Nursing
+STU_0633,Business
+STU_0634,History
+STU_0635,Chemistry
+STU_0636,English
+STU_0637,History
+STU_0638,Nursing
+STU_0639,Political Science
+STU_0640,History
+STU_0641,Business
+STU_0642,Business
+STU_0643,Biology
+STU_0644,Political Science
+STU_0645,History
+STU_0646,Arts
+STU_0647,English
+STU_0648,Arts
+STU_0649,Business
+STU_0650,History
+STU_0651,Psychology
+STU_0652,Computer Science
+STU_0653,Nursing
+STU_0654,Nursing
+STU_0655,Chemistry
+STU_0656,Political Science
+STU_0657,Biology
+STU_0658,Business
+STU_0659,Mathematics
+STU_0660,Mathematics
+STU_0661,Computer Science
+STU_0662,Computer Science
+STU_0663,Biology
+STU_0664,Chemistry
+STU_0665,Chemistry
+STU_0666,Computer Science
+STU_0667,Economics
+STU_0668,Economics
+STU_0669,Arts
+STU_0670,History
+STU_0671,Computer Science
+STU_0672,Business
+STU_0673,Economics
+STU_0674,English
+STU_0675,Nursing
+STU_0676,Business
+STU_0677,History
+STU_0678,Economics
+STU_0679,Economics
+STU_0680,Mathematics
+STU_0681,Chemistry
+STU_0682,Biology
+STU_0683,Arts
+STU_0684,Biology
+STU_0685,Mathematics
+STU_0686,History
+STU_0687,Business
+STU_0688,Economics
+STU_0689,Biology
+STU_0690,Psychology
+STU_0691,English
+STU_0692,Mathematics
+STU_0693,English
+STU_0694,Biology
+STU_0695,English
+STU_0696,Arts
+STU_0697,Chemistry
+STU_0698,Computer Science
+STU_0699,Economics
+STU_0700,Computer Science

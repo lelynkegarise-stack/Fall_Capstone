@@ -1,10 +1,16 @@
 package scheduler;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Arrays;
+import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.google.ortools.Loader;
 
@@ -13,60 +19,194 @@ import com.google.ortools.Loader;
  *
  * Expected layout:
  *   datasets/
- *     small/   timeslot.csv classrooms.csv courses.csv students.csv instructors.csv
- *     medium/  ...
- *     large/   ...
+ *     d1/   timeslot.csv classrooms.csv courses.csv students.csv instructors.csv enrollments.csv
+ *     d2/   ...
  *
- * Usage: java scheduler.BatchSchedulerRunner [datasetsRoot] [timeLimitSec] [includeStudents]
+ * Usage: java scheduler.BatchSchedulerRunner [datasetsRoot] [timeLimitSec] [includeStudents] [resume]
  */
 public class BatchSchedulerRunner {
 
+    private static final String OUTPUT_FILE = "results.csv";
+
     public static void main(String[] args) throws IOException {
         String root = args.length > 0 ? args[0] : "datasets";
-        double timeLimit = args.length > 1 ? Double.parseDouble(args[1]) : 60.0;
+        double timeLimit = args.length > 1 ? Double.parseDouble(args[1]) : 500.0;
         boolean includeStudents = args.length > 2 ? Boolean.parseBoolean(args[2]) : true;
+        boolean resume = args.length > 3 ? Boolean.parseBoolean(args[3]) : true;
         int workers = Runtime.getRuntime().availableProcessors();
 
-        Loader.loadNativeLibraries(); // once for the whole run
-
-        File[] dirs = new File(root).listFiles(File::isDirectory);
+        File rootDir = new File(root);
+        File[] dirs = rootDir.listFiles(File::isDirectory);
         if (dirs == null || dirs.length == 0) {
-            System.err.println("No dataset folders found in " + root);
+            System.err.println("No dataset folders found in root directory: " + rootDir.getAbsolutePath());
             return;
         }
-        Arrays.sort(dirs);
 
-        // Warm up the JIT so greedy timings aren't dominated by class loading
-        CSVDataLoader.ScheduleData warm = new CSVDataLoader(dirs[0].getPath()).loadAllDatasets();
-        GreedyScheduler.solve(warm, ConflictGroups.build(warm, includeStudents), "warmup");
+        // Natural sort so d2 comes before d10
+        Arrays.sort(dirs, Comparator.comparing(File::getName, BatchSchedulerRunner::naturalCompare));
 
-        try (PrintWriter out = new PrintWriter("results.csv")) {
-            out.println(ScheduleResult.csvHeader());
+        System.out.println("Root directory: " + rootDir.getAbsolutePath());
+        System.out.println("Discovered " + dirs.length + " dataset folders:");
+        for (int i = 0; i < dirs.length; i++) {
+            System.out.println("  [" + (i + 1) + "] " + dirs[i].getName());
+        }
+        System.out.flush();
 
-            for (File dir : dirs) {
-                String name = dir.getName();
-                CSVDataLoader.ScheduleData data = new CSVDataLoader(dir.getPath()).loadAllDatasets();
-                List<int[]> groups = ConflictGroups.build(data, includeStudents);
+        Set<String> completedDatasets = new HashSet<>();
+        File outFile = new File(OUTPUT_FILE);
+        boolean append = false;
 
-                // Run both methods on exactly the same data and conflict groups
-                ScheduleResult greedy = GreedyScheduler.solve(data, groups, name);
-                ScheduleResult cp = ScehdulingSolver.solve(data, groups, name, timeLimit, workers);
+        if (resume && outFile.exists() && outFile.length() > 0) {
+            completedDatasets = loadCompletedDatasets(outFile);
+            append = true;
+            System.out.println("Resuming from " + OUTPUT_FILE + " (" + completedDatasets.size() + " datasets already recorded).");
+            System.out.flush();
+        }
 
-                // Same bound and same independent checker for both, so the comparison is fair.
-                // (Runtime was already recorded inside each solve, so this adds nothing to it.)
-                greedy.computeExtras(data, groups);
-                cp.computeExtras(data, groups);
+        System.out.println("\nLoading Google OR-Tools native libraries...");
+        System.out.flush();
+        Loader.loadNativeLibraries();
 
-                System.out.println(greedy);
-                System.out.println(cp);
-                System.out.println("  -> " + verdict(greedy, cp) + "\n");
-
-                out.println(greedy.toCsvRow());
-                out.println(cp.toCsvRow());
-                out.flush();
+        // Warm up the JIT on the first available dataset
+        File warmupTarget = dirs[0];
+        for (File d : dirs) {
+            if (!completedDatasets.contains(d.getName())) {
+                warmupTarget = d;
+                break;
             }
         }
-        System.out.println("Wrote results.csv");
+        System.out.println("Running JIT warmup on " + warmupTarget.getName() + "...");
+        System.out.flush();
+        try {
+            CSVDataLoader.ScheduleData warm = new CSVDataLoader(warmupTarget.getPath()).loadAllDatasets();
+            GreedyScheduler.solve(warm, ConflictGroups.build(warm, includeStudents), "warmup");
+        } catch (Exception e) {
+            System.err.println("Warning: JIT warmup failed on " + warmupTarget.getName() + ": " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        int succeeded = 0;
+        int failed = 0;
+        int skipped = 0;
+
+        try (PrintWriter out = new PrintWriter(new FileWriter(outFile, append))) {
+            if (!append) {
+                out.println(ScheduleResult.csvHeader());
+                out.flush();
+            }
+
+            for (int i = 0; i < dirs.length; i++) {
+                File dir = dirs[i];
+                String name = dir.getName();
+
+                if (resume && completedDatasets.contains(name)) {
+                    System.out.println("\nSkipping [" + name + "] (" + (i + 1) + "/" + dirs.length + ") — already in " + OUTPUT_FILE);
+                    skipped++;
+                    continue;
+                }
+
+                System.out.println("\n----------------------------------------");
+                System.out.println("Processing dataset [" + name + "] (" + (i + 1) + " of " + dirs.length + ")");
+                System.out.println("----------------------------------------");
+                System.out.flush();
+
+                try {
+                    System.out.println("-> Loading CSV datasets for " + name + "...");
+                    System.out.flush();
+                    CSVDataLoader.ScheduleData data = new CSVDataLoader(dir.getPath()).loadAllDatasets();
+
+                    System.out.println("-> Building conflict groups (includeStudents = " + includeStudents + ")...");
+                    System.out.flush();
+                    List<int[]> groups = ConflictGroups.build(data, includeStudents);
+
+                    System.out.println("-> Running Greedy Scheduler...");
+                    System.out.flush();
+                    ScheduleResult greedy = GreedyScheduler.solve(data, groups, name);
+
+                    System.out.println("-> Running CP-SAT Solver (Time limit: " + timeLimit + "s, Workers: " + workers + ")...");
+                    System.out.flush();
+                    ScheduleResult cp = ScehdulingSolver.solve(data, groups, name, timeLimit, workers, greedy);
+
+                    greedy.computeExtras(data, groups);
+                    cp.computeExtras(data, groups);
+
+                    System.out.println(greedy);
+                    System.out.println(cp);
+                    System.out.println("  -> " + verdict(greedy, cp));
+                    System.out.flush();
+
+                    out.println(greedy.toCsvRow());
+                    out.println(cp.toCsvRow());
+                    out.flush();
+                    succeeded++;
+                } catch (Exception | AssertionError ex) {
+                    failed++;
+                    System.err.println("ERROR processing dataset [" + name + "]: " + ex.getClass().getSimpleName() + " - " + ex.getMessage());
+                    ex.printStackTrace();
+                    System.err.flush();
+                }
+            }
+        }
+
+        System.out.println("\n========================================");
+        System.out.println("Batch finished! Succeeded: " + succeeded + ", Failed: " + failed + ", Skipped: " + skipped);
+        System.out.println("Results written to: " + outFile.getAbsolutePath());
+        System.out.println("========================================");
+        System.out.flush();
+    }
+
+    /**
+     * Reads existing results.csv to find dataset names already written.
+     * Assumes the dataset name is the first comma-separated column in each row.
+     */
+    private static Set<String> loadCompletedDatasets(File csvFile) {
+        Set<String> done = new HashSet<>();
+        try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
+            String line;
+            boolean isHeader = true;
+            while ((line = br.readLine()) != null) {
+                if (isHeader) {
+                    isHeader = false;
+                    continue;
+                }
+                if (line.trim().isEmpty()) {
+                    continue;
+                }
+                String[] parts = line.split(",", 2);
+                if (parts.length > 0 && !parts[0].trim().isEmpty()) {
+                    done.add(parts[0].trim());
+                }
+            }
+        } catch (IOException e) {
+            System.err.println("Warning: Could not read existing " + csvFile.getName() + " for resume: " + e.getMessage());
+        }
+        return done;
+    }
+
+    private static int naturalCompare(String a, String b) {
+        int i = 0, j = 0;
+        while (i < a.length() && j < b.length()) {
+            char ca = a.charAt(i);
+            char cb = b.charAt(j);
+            if (Character.isDigit(ca) && Character.isDigit(cb)) {
+                int startA = i;
+                int startB = j;
+                while (i < a.length() && Character.isDigit(a.charAt(i))) i++;
+                while (j < b.length() && Character.isDigit(b.charAt(j))) j++;
+                long numA = Long.parseLong(a.substring(startA, i));
+                long numB = Long.parseLong(b.substring(startB, j));
+                if (numA != numB) {
+                    return Long.compare(numA, numB);
+                }
+            } else {
+                if (ca != cb) {
+                    return Character.compare(ca, cb);
+                }
+                i++;
+                j++;
+            }
+        }
+        return Integer.compare(a.length(), b.length());
     }
 
     /** One-line summary of who did better on the main quality measures. */
